@@ -22,51 +22,21 @@ export interface PortfolioProject {
 
 const imagePool: PortfolioImage[][] = [
   [
-    {
-      src: auroraCore,
-      alt: "Aurora Core 产品渲染主视觉",
-      width: 1600,
-      height: 1000,
-    },
-    {
-      src: haloInterface,
-      alt: "Aurora Core 制作过程中的界面与灯光探索",
-      width: 1600,
-      height: 1000,
-    },
+    { src: auroraCore, alt: "Jumbo热泵产品渲染主视觉", width: 1600, height: 1000 },
+    { src: haloInterface, alt: "Jumbo热泵界面与灯光探索", width: 1600, height: 1000 },
   ],
   [
-    {
-      src: vertexDrone,
-      alt: "Vertex Drone 飞行器产品渲染",
-      width: 1600,
-      height: 1000,
-    },
-    {
-      src: auroraCore,
-      alt: "Vertex Drone 结构拆解与运动路径",
-      width: 1600,
-      height: 1000,
-    },
+    { src: vertexDrone, alt: "产品结构动态展示", width: 1600, height: 1000 },
+    { src: auroraCore, alt: "产品结构拆解与运动路径", width: 1600, height: 1000 },
   ],
   [
-    {
-      src: haloInterface,
-      alt: "Halo Interface 界面动效渲染",
-      width: 1600,
-      height: 1000,
-    },
-    {
-      src: vertexDrone,
-      alt: "Halo Interface 制作视角与运动路径",
-      width: 1600,
-      height: 1000,
-    },
+    { src: haloInterface, alt: "界面动效渲染", width: 1600, height: 1000 },
+    { src: vertexDrone, alt: "制作视角与运动路径", width: 1600, height: 1000 },
   ],
 ]
 
 const projectSeeds = [
-  ["Aurora Core", "aurora-core", "Launch Film", "2026", "为高性能计算核心设计的发布级产品短片，重点呈现金属结构、冷光边缘和微距镜头节奏。", ["产品动画", "硬表面", "材质灯光", "官网首屏"]],
+  ["Jumbo热泵", "aurora-core", "Launch Film", "2026", "Jumbo热泵产品动态展示，突出整机结构、核心部件、运行效率与科技质感。", ["热泵", "产品动画", "工业设计", "发布视觉"]],
   ["Vertex Drone", "vertex-drone", "Product Visualization", "2026", "面向飞行设备的产品视觉系统，覆盖英雄镜头、结构拆解、空气动力学线框和短片交付。", ["飞行器", "拆解动画", "硬件发布", "动态系统"]],
   ["Halo Interface", "halo-interface", "Interface Motion", "2026", "为智能设备界面制作的动态视觉实验，强调克制的玻璃层级、清晰状态变化和品牌化转场。", ["界面动效", "玻璃层级", "智能设备", "Design System"]],
   ["Atlas Wearable", "atlas-wearable", "Wearable Launch", "2025", "智能穿戴产品的发布视觉，围绕佩戴状态、传感器结构和 UI 信息层级建立镜头语言。", ["可穿戴", "发布片", "UI Motion", "产品 KV"]],

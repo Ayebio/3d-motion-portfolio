@@ -1,0 +1,43 @@
+---
+import { ClientRouter } from "astro:transitions"
+
+import { TopNav } from "@/components/navigation/TopNav"
+import "@/styles/global.css"
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = "3D 产品动态设计师作品集",
+  description = "面向科技品牌、硬件产品和未来界面的 3D 产品动画与动态视觉作品集。",
+} = Astro.props
+---
+
+<!doctype html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      const savedTheme = window.localStorage.getItem("theme");
+      const theme = savedTheme === "light" ? "light" : "dark";
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      document.documentElement.dataset.theme = theme;
+    </script>
+    <ClientRouter />
+    <title>{title}</title>
+  </head>
+  <body>
+    <TopNav client:load />
+    <main class="view-soft min-h-dvh">
+      <slot />
+    </main>
+    <footer class="px-6 py-10 text-center text-xs text-muted-foreground">
+      <p>Motion Atelier · Product Motion Design · Shanghai / Remote</p>
+    </footer>
+  </body>
+</html>

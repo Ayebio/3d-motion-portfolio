@@ -1,0 +1,37 @@
+---
+import { ContactForm } from "@/components/contact/ContactForm"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+---
+
+<BaseLayout title="联系 | 3D 产品动态设计师作品集">
+  <section class="px-6 pb-24 pt-32">
+    <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Contact</p>
+        <h1 class="mt-4 text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-7xl">
+          把新产品讲清楚。
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
+          适合硬件新品发布、官网首屏视频、展会屏幕、App / 设备界面动效与产品主视觉。请留下项目范围，我会按目标、周期和交付格式回复。
+        </p>
+
+        <div class="mt-10 grid gap-6 border-t border-border pt-8 text-sm">
+          <div>
+            <p class="text-muted-foreground">邮箱</p>
+            <p class="mt-1 font-medium text-foreground">hello@motion-atelier.studio</p>
+          </div>
+          <div>
+            <p class="text-muted-foreground">地点</p>
+            <p class="mt-1 font-medium text-foreground">上海 / 远程协作</p>
+          </div>
+          <div>
+            <p class="text-muted-foreground">响应</p>
+            <p class="mt-1 font-medium text-foreground">1-2 个工作日内回复</p>
+          </div>
+        </div>
+      </div>
+
+      <ContactForm client:load />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,123 @@
+---
+import { Image } from "astro:assets"
+import { ArrowLeft, Play } from "lucide-react"
+
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getPortfolioEntries } from "@/lib/contentful"
+import { getYouTubeEmbedUrl } from "@/lib/video"
+import type { PortfolioProject } from "@/data/projects"
+
+export async function getStaticPaths() {
+  const projects = await getPortfolioEntries()
+
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }))
+}
+
+const { project } = Astro.props as { project: PortfolioProject }
+const heroImage = project.images[0]
+const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
+---
+
+<BaseLayout title={`${project.title} | 作品详情`}>
+  <article class="pb-24">
+    <section class="relative isolate min-h-[78svh] overflow-hidden px-6 pb-12 pt-28">
+      <Image
+        src={heroImage.src}
+        alt={heroImage.alt}
+        width={heroImage.width}
+        height={heroImage.height}
+        class="media-quiet absolute inset-0 -z-20 h-full w-full object-cover opacity-76"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.74)_72%,rgb(8,8,8))]"></div>
+
+      <div class="mx-auto flex min-h-[calc(78svh-10rem)] max-w-6xl flex-col justify-end">
+        <a
+          href="/#work"
+          class="mb-8 inline-flex w-fit items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-sm text-white/78 outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/50 active:scale-95"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          返回作品
+        </a>
+        <p class="text-xs font-medium uppercase tracking-[0.28em] text-white/58">{project.role}</p>
+        <h1 class="mt-4 max-w-4xl text-balance text-6xl font-semibold tracking-tight text-white sm:text-8xl">
+          {project.title}
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-white/72">{project.description}</p>
+      </div>
+    </section>
+
+    <section class="px-6 py-16">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+        <aside class="grid content-start gap-6 text-sm">
+          <div>
+            <p class="text-muted-foreground">年份</p>
+            <p class="mt-1 font-medium text-foreground">{project.year}</p>
+          </div>
+          <div>
+            <p class="text-muted-foreground">范围</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span class="rounded-md border border-border px-2.5 py-1 text-xs text-foreground">{tag}</span>
+              ))}
+            </div>
+          </div>
+          <a
+            href={project.videoUrl}
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex w-fit items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none hover:opacity-86 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
+          >
+            <Play className="size-4" aria-hidden="true" />
+            打开 YouTube
+          </a>
+        </aside>
+
+        <div class="grid gap-5">
+          <section class="overflow-hidden rounded-md bg-card ring-1 ring-border/70">
+            <div class="aspect-video bg-secondary">
+              {embedUrl ? (
+                <iframe
+                  class="h-full w-full"
+                  src={embedUrl}
+                  title={`${project.title} YouTube 视频`}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              ) : (
+                <Image
+                  src={heroImage.src}
+                  alt={heroImage.alt}
+                  width={heroImage.width}
+                  height={heroImage.height}
+                  class="media-quiet h-full w-full object-cover"
+                />
+              )}
+            </div>
+            <div class="border-t border-border px-4 py-3 text-sm text-muted-foreground">
+              视频链接来自项目数据中的 videoUrl 字段，可直接替换为你的 YouTube 上传链接。
+            </div>
+          </section>
+
+          {project.images.map((image) => (
+            <figure class="overflow-hidden rounded-md bg-card ring-1 ring-border/70">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                class="media-quiet aspect-[16/10] w-full object-cover"
+              />
+              <figcaption class="border-t border-border px-4 py-3 text-sm text-muted-foreground">
+                {image.alt}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

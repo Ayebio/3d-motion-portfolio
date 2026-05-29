@@ -1,0 +1,81 @@
+---
+import { ArrowRight } from "lucide-react"
+
+import { FadeIn } from "@/components/motion/FadeIn"
+import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getPortfolioEntries } from "@/lib/contentful"
+
+const projects = await getPortfolioEntries()
+const heroImage = projects[0].images[0]
+const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : heroImage.src.src
+---
+
+<BaseLayout title="3D 产品动态设计师作品集 | Motion Atelier">
+  <section class="relative isolate min-h-[96svh] overflow-hidden px-6 pb-12 pt-24">
+    <img
+      src={heroImageSource}
+      alt={heroImage.alt}
+      class="media-quiet absolute inset-0 -z-20 h-full w-full object-cover opacity-70 animate-slow-drift"
+      loading="eager"
+    />
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.72)_68%,rgb(8,8,8))]"></div>
+    <div class="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/70 to-transparent"></div>
+
+    <div class="mx-auto flex min-h-[calc(96svh-9rem)] max-w-6xl flex-col items-center justify-center text-center">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/60">Motion Atelier</p>
+      <h1 class="text-balance max-w-5xl text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
+        让科技产品拥有发布级画面。
+      </h1>
+      <p class="mt-6 max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
+        3D 产品动画、硬表面渲染、界面动态与官网首屏视频，为硬件与科技品牌建立更清晰的第一印象。
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="#work"
+          class="inline-flex h-10 items-center gap-2 rounded-md bg-white px-4 text-sm font-medium text-black outline-none hover:bg-white/86 focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]"
+        >
+          查看作品
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex h-10 items-center rounded-md border border-white/30 px-4 text-sm font-medium text-white outline-none hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]"
+        >
+          联系合作
+        </a>
+      </div>
+    </div>
+
+    <div class="mx-auto grid max-w-6xl gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-white sm:grid-cols-3">
+      {[
+        ["Film", "产品发布片 / 官网首屏视频"],
+        ["Render", "8K 静帧 / 产品 KV / 材质灯光"],
+        ["Motion", "界面动效 / 拆解动画 / 转场系统"],
+      ].map(([title, body]) => (
+        <div class="bg-black/36 p-5 backdrop-blur-xl">
+          <p class="text-sm font-medium">{title}</p>
+          <p class="mt-2 text-sm text-white/58">{body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="work" class="px-6 py-24">
+    <div class="mx-auto max-w-6xl">
+      <FadeIn client:visible>
+        <div class="mb-12 max-w-3xl">
+          <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Selected Work</p>
+          <h2 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
+            二十个项目，统一成一套清晰的视觉语言。
+          </h2>
+          <p class="mt-5 text-base leading-7 text-muted-foreground">
+            每张作品卡片都预留 YouTube 嵌入位置。把项目数据里的 videoUrl 换成你的 YouTube 上传链接后，卡片会直接显示视频。
+          </p>
+        </div>
+      </FadeIn>
+
+      <PortfolioGrid projects={projects} />
+    </div>
+  </section>
+</BaseLayout>

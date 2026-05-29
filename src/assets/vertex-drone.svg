@@ -1,0 +1,42 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#0A0A0D"/>
+  <g opacity=".45">
+    <path d="M160 240H1440" stroke="#38BDF8" stroke-opacity=".2"/>
+    <path d="M160 760H1440" stroke="#A3FF12" stroke-opacity=".12"/>
+    <path d="M430 126V858" stroke="#38BDF8" stroke-opacity=".09"/>
+    <path d="M1170 126V858" stroke="#38BDF8" stroke-opacity=".09"/>
+  </g>
+  <g filter="url(#f)">
+    <path d="M382 480L650 350H950L1218 480L950 610H650L382 480Z" fill="url(#a)" stroke="url(#b)" stroke-width="2"/>
+    <path d="M650 350L795 480L650 610L382 480L650 350Z" fill="#101827" fill-opacity=".82"/>
+    <path d="M950 350L805 480L950 610L1218 480L950 350Z" fill="#111B2A" fill-opacity=".86"/>
+    <path d="M650 610H950L806 714H796L650 610Z" fill="#0D111D" stroke="#38BDF8" stroke-opacity=".2"/>
+    <circle cx="382" cy="480" r="78" fill="#101827" stroke="#38BDF8" stroke-opacity=".55" stroke-width="2"/>
+    <circle cx="1218" cy="480" r="78" fill="#101827" stroke="#A3FF12" stroke-opacity=".45" stroke-width="2"/>
+    <path d="M598 480H1002" stroke="url(#c)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <defs>
+    <linearGradient id="a" x1="382" y1="350" x2="1218" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#202B3E"/>
+      <stop offset=".5" stop-color="#0C1220"/>
+      <stop offset="1" stop-color="#1B2433"/>
+    </linearGradient>
+    <linearGradient id="b" x1="382" y1="350" x2="1218" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8" stop-opacity=".62"/>
+      <stop offset=".5" stop-color="#FFFFFF" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#A3FF12" stop-opacity=".5"/>
+    </linearGradient>
+    <linearGradient id="c" x1="598" y1="480" x2="1002" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#A3FF12"/>
+    </linearGradient>
+    <filter id="f" x="254" y="260" width="1092" height="554" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="36"/>
+      <feOffset dy="20"/>
+      <feComposite in2="SourceAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0.219608 0 0 0 0 0.741176 0 0 0 0 0.972549 0 0 0 0.3 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2_1"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_2_1" result="shape"/>
+    </filter>
+  </defs>
+</svg>

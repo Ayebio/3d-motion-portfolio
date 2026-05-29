@@ -1,0 +1,29 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#09090B"/>
+  <g filter="url(#f)">
+    <circle cx="800" cy="500" r="292" fill="#0E1625" stroke="#38BDF8" stroke-opacity=".38" stroke-width="2"/>
+    <circle cx="800" cy="500" r="214" fill="#0B0F1A" stroke="#A3FF12" stroke-opacity=".32" stroke-width="2"/>
+    <circle cx="800" cy="500" r="114" fill="url(#a)" stroke="white" stroke-opacity=".2"/>
+    <path d="M800 208V302" stroke="#38BDF8" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>
+    <path d="M800 698V792" stroke="#A3FF12" stroke-opacity=".42" stroke-width="6" stroke-linecap="round"/>
+    <path d="M508 500H602" stroke="#38BDF8" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>
+    <path d="M998 500H1092" stroke="#A3FF12" stroke-opacity=".42" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <path d="M490 218H1110" stroke="#38BDF8" stroke-opacity=".12"/>
+  <path d="M490 782H1110" stroke="#A3FF12" stroke-opacity=".1"/>
+  <defs>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(770 460) rotate(52.125) scale(206.01)">
+      <stop stop-color="#38BDF8"/>
+      <stop offset=".48" stop-color="#132033"/>
+      <stop offset="1" stop-color="#A3FF12"/>
+    </radialGradient>
+    <filter id="f" x="428" y="128" width="744" height="744" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="36"/>
+      <feOffset dy="20"/>
+      <feComposite in2="SourceAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0.219608 0 0 0 0 0.741176 0 0 0 0 0.972549 0 0 0 0.3 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_3_1"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_3_1" result="shape"/>
+    </filter>
+  </defs>
+</svg>

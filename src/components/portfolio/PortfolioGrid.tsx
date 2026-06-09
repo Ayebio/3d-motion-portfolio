@@ -1,7 +1,6 @@
 import { ArrowUpRight, Play } from "lucide-react"
 
 import type { PortfolioProject } from "@/data/projects"
-import { getYouTubeEmbedUrl } from "@/lib/video"
 
 interface PortfolioGridProps {
   projects: PortfolioProject[]
@@ -12,47 +11,32 @@ function getImageSource(project: PortfolioProject) {
   return typeof image.src === "string" ? image.src : image.src.src
 }
 
-function isPlaceholderVideo(url: string) {
-  return url.includes("VIDEOID")
-}
-
 export function PortfolioGrid({ projects }: PortfolioGridProps) {
   return (
     <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
       {projects.map((project) => {
-        const embedUrl = !isPlaceholderVideo(project.videoUrl) ? getYouTubeEmbedUrl(project.videoUrl) : null
-
         return (
           <article
             key={project.slug}
             className="group overflow-hidden rounded-md bg-card ring-1 ring-border/70 transition duration-300 hover:-translate-y-1 hover:ring-foreground/24 active:scale-[0.99]"
           >
-            <div className="relative aspect-[16/11] overflow-hidden bg-secondary">
-              {embedUrl ? (
-                <iframe
-                  className="h-full w-full"
-                  src={embedUrl}
-                  title={`${project.title} YouTube 视频`}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              ) : (
-                <>
-                  <img
-                    src={getImageSource(project)}
-                    alt={project.images[0].alt}
-                    className="media-quiet h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/18">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-white/90 text-black shadow-soft">
-                      <Play className="ml-0.5 size-5" aria-hidden="true" />
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
+            <a
+              href={`/projects/${project.slug}`}
+              aria-label={`打开 ${project.title} 详情页`}
+              className="relative block aspect-[16/11] overflow-hidden bg-secondary outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            >
+              <img
+                src={getImageSource(project)}
+                alt={project.images[0].alt}
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
+                loading="eager"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/12 opacity-0 transition group-hover:opacity-100">
+                <span className="flex size-12 items-center justify-center rounded-full bg-white/90 text-black shadow-soft">
+                  <Play className="ml-0.5 size-5" aria-hidden="true" />
+                </span>
+              </div>
+            </a>
 
             <div className="flex items-end justify-between gap-4 px-4 py-4">
               <div>

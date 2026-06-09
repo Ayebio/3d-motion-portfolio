@@ -29,7 +29,7 @@ const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
         alt={heroImage.alt}
         width={heroImage.width}
         height={heroImage.height}
-        class="media-quiet absolute inset-0 -z-20 h-full w-full object-cover opacity-76"
+        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-76"
       />
       <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.74)_72%,rgb(8,8,8))]"></div>
 
@@ -93,7 +93,7 @@ const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
                   alt={heroImage.alt}
                   width={heroImage.width}
                   height={heroImage.height}
-                  class="media-quiet h-full w-full object-cover"
+                  class="h-full w-full object-cover"
                 />
               )}
             </div>
@@ -101,21 +101,6 @@ const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
               视频链接来自项目数据中的 videoUrl 字段，可直接替换为你的 YouTube 上传链接。
             </div>
           </section>
-
-          {project.images.map((image) => (
-            <figure class="overflow-hidden rounded-md bg-card ring-1 ring-border/70">
-              <Image
-                src={image.src}
-                alt={image.alt}
-                width={image.width}
-                height={image.height}
-                class="media-quiet aspect-[16/10] w-full object-cover"
-              />
-              <figcaption class="border-t border-border px-4 py-3 text-sm text-muted-foreground">
-                {image.alt}
-              </figcaption>
-            </figure>
-          ))}
         </div>
       </div>
     </section>

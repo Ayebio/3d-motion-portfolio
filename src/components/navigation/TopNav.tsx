@@ -41,7 +41,7 @@ export function TopNav() {
           className="rounded-md px-2 py-2 text-sm font-medium tracking-tight text-foreground outline-none hover:opacity-70 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
           aria-label="返回首页"
         >
-          Motion Atelier
+          Motion Protfolio
         </a>
 
         <div className="flex items-center gap-4">

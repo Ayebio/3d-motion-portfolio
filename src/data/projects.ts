@@ -1,7 +1,3 @@
-import auroraCore from "@/assets/aurora-core.svg"
-import haloInterface from "@/assets/halo-interface.svg"
-import vertexDrone from "@/assets/vertex-drone.svg"
-
 export interface PortfolioImage {
   src: ImageMetadata | string
   alt: string
@@ -20,51 +16,131 @@ export interface PortfolioProject {
   images: PortfolioImage[]
 }
 
-const imagePool: PortfolioImage[][] = [
-  [
-    { src: auroraCore, alt: "Jumbo热泵产品渲染主视觉", width: 1600, height: 1000 },
-    { src: haloInterface, alt: "Jumbo热泵界面与灯光探索", width: 1600, height: 1000 },
-  ],
-  [
-    { src: vertexDrone, alt: "产品结构动态展示", width: 1600, height: 1000 },
-    { src: auroraCore, alt: "产品结构拆解与运动路径", width: 1600, height: 1000 },
-  ],
-  [
-    { src: haloInterface, alt: "界面动效渲染", width: 1600, height: 1000 },
-    { src: vertexDrone, alt: "制作视角与运动路径", width: 1600, height: 1000 },
-  ],
+interface PortfolioVideo {
+  id: string
+  title: string
+  year: string
+  videoUrl: string
+  thumbnailWidth: number
+  thumbnailHeight: number
+}
+
+const portfolioVideos: PortfolioVideo[] = [
+  { id: "senw5VrE0z4", title: "230613_Jumbo热泵", year: "2023", videoUrl: "https://youtu.be/senw5VrE0z4", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "HVWFA1Y2ed8", title: "230703_InverEco水泵", year: "2023", videoUrl: "https://youtu.be/HVWFA1Y2ed8", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "Cf2fGJo0SOc", title: "230726_Prefect热泵", year: "2023", videoUrl: "https://youtu.be/Cf2fGJo0SOc", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "qyhym-Ghnu8", title: "230817_一体机热泵", year: "2023", videoUrl: "https://youtu.be/qyhym-Ghnu8", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "c0d6gls0Ib4", title: "230906_X-Warrior水下机器人", year: "2023", videoUrl: "https://youtu.be/c0d6gls0Ib4", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "dGm1MYww7Lc", title: "230922_X20热泵", year: "2023", videoUrl: "https://youtu.be/dGm1MYww7Lc", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "0PpaLPon3PU", title: "231009_Aquark Igarden", year: "2023", videoUrl: "https://youtu.be/0PpaLPon3PU", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "irNQLLKmoCo", title: "231027_Aquark Igarden-02", year: "2023", videoUrl: "https://youtu.be/irNQLLKmoCo", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "1tnOPYVuoEE", title: "231114_吉尼斯水下机器人-01", year: "2023", videoUrl: "https://youtu.be/1tnOPYVuoEE", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "6VGydJbip1s", title: "231211_Aquark中控", year: "2023", videoUrl: "https://youtu.be/6VGydJbip1s", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "42ClSeIV4js", title: "240130_吉尼斯水下机器人-02", year: "2024", videoUrl: "https://youtu.be/42ClSeIV4js", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "VbcW7ioOVVw", title: "240219_吉尼斯热泵-01", year: "2024", videoUrl: "https://youtu.be/VbcW7ioOVVw", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "WEZo1cDnUBc", title: "240326_吉尼斯热泵-02", year: "2024", videoUrl: "https://youtu.be/WEZo1cDnUBc", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "ki6b6e-i_sE", title: "240405_吉尼斯割草机器人-01", year: "2024", videoUrl: "https://youtu.be/ki6b6e-i_sE", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "iZniQWRyigA", title: "240430 Fairland Igarden-01", year: "2024", videoUrl: "https://youtu.be/iZniQWRyigA", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "NrYIxH9fVyw", title: "240513_超跑Igarden", year: "2024", videoUrl: "https://youtu.be/NrYIxH9fVyw", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "eumcOho7TVk", title: "240527_InverX水下机器人", year: "2024", videoUrl: "https://youtu.be/eumcOho7TVk", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "ItI2-Q-3TDk", title: "240701_企业宣传", year: "2024", videoUrl: "https://youtu.be/ItI2-Q-3TDk", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "yWSxNQVz-wo", title: "240802_吉尼斯割草机器人-02", year: "2024", videoUrl: "https://youtu.be/yWSxNQVz-wo", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "GGaCdA6-Jh4", title: "240903_Fairland中控", year: "2024", videoUrl: "https://youtu.be/GGaCdA6-Jh4", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "H6KBnHvM4ok", title: "240918_BIO盐机", year: "2024", videoUrl: "https://youtu.be/H6KBnHvM4ok", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "BdproiyjRHw", title: "241118_N机热泵", year: "2024", videoUrl: "https://youtu.be/BdproiyjRHw", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "H3qqhwwCsSs", title: "241217_CES", year: "2024", videoUrl: "https://youtu.be/H3qqhwwCsSs", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "Jg4NlfRlo8w", title: "241231_Power热泵", year: "2024", videoUrl: "https://youtu.be/Jg4NlfRlo8w", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "zGIfQZ3O5FU", title: "250204_RTK视觉割草机", year: "2025", videoUrl: "https://youtu.be/zGIfQZ3O5FU", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "-ySnmqpeko4", title: "250219_Lifestyle", year: "2025", videoUrl: "https://youtu.be/-ySnmqpeko4", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "NwEumpzzvRI", title: "230303_暖通热泵-01", year: "2023", videoUrl: "https://youtu.be/NwEumpzzvRI", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "82qjZGJv_Mk", title: "250409_勒芒-01", year: "2025", videoUrl: "https://youtu.be/82qjZGJv_Mk", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "f18Cvt1J70k", title: "250424_IEW合集-01", year: "2025", videoUrl: "https://youtu.be/f18Cvt1J70k", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "JopwBrujYL0", title: "250429_勒芒热泵", year: "2025", videoUrl: "https://youtu.be/JopwBrujYL0", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "xLh884PvWGQ", title: "250516_激光雷达割草机器人", year: "2025", videoUrl: "https://youtu.be/xLh884PvWGQ", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "OWM6lq4wf6s", title: "250613_木纹热泵", year: "2025", videoUrl: "https://youtu.be/OWM6lq4wf6s", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "fZ_4P0n0TKs", title: "250707_TSTB热泵", year: "2025", videoUrl: "https://youtu.be/fZ_4P0n0TKs", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "ildUoVK9Z9s", title: "250723_N4水下机器人", year: "2025", videoUrl: "https://youtu.be/ildUoVK9Z9s", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "7llZUvmVtqI", title: "250824_CF N4水下机器人", year: "2025", videoUrl: "https://youtu.be/7llZUvmVtqI", thumbnailWidth: 480, thumbnailHeight: 360 },
+  { id: "3ZJdMOC3Uz4", title: "250903_暖通热泵", year: "2025", videoUrl: "https://youtu.be/3ZJdMOC3Uz4", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "GHSxftOKDvk", title: "250922_CF N3水下机器人", year: "2025", videoUrl: "https://youtu.be/GHSxftOKDvk", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "siKaN6rGN0I", title: "251121_Oasis热泵", year: "2025", videoUrl: "https://youtu.be/siKaN6rGN0I", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "2vkjldJEUMY", title: "251210_XP26热泵", year: "2025", videoUrl: "https://youtu.be/2vkjldJEUMY", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "B-Vwlw6snrk", title: "260109_XP16热泵", year: "2026", videoUrl: "https://youtu.be/B-Vwlw6snrk", thumbnailWidth: 1280, thumbnailHeight: 720 },
 ]
 
-const projectSeeds = [
-  ["Jumbo热泵", "aurora-core", "Launch Film", "2026", "Jumbo热泵产品动态展示，突出整机结构、核心部件、运行效率与科技质感。", ["热泵", "产品动画", "工业设计", "发布视觉"]],
-  ["Vertex Drone", "vertex-drone", "Product Visualization", "2026", "面向飞行设备的产品视觉系统，覆盖英雄镜头、结构拆解、空气动力学线框和短片交付。", ["飞行器", "拆解动画", "硬件发布", "动态系统"]],
-  ["Halo Interface", "halo-interface", "Interface Motion", "2026", "为智能设备界面制作的动态视觉实验，强调克制的玻璃层级、清晰状态变化和品牌化转场。", ["界面动效", "玻璃层级", "智能设备", "Design System"]],
-  ["Atlas Wearable", "atlas-wearable", "Wearable Launch", "2025", "智能穿戴产品的发布视觉，围绕佩戴状态、传感器结构和 UI 信息层级建立镜头语言。", ["可穿戴", "发布片", "UI Motion", "产品 KV"]],
-  ["Nova Console", "nova-console", "Gaming Hardware", "2025", "游戏硬件的暗场产品动画，强调散热结构、灯光状态和高速转场。", ["游戏硬件", "散热结构", "暗场渲染", "短片"]],
-  ["Lumen Speaker", "lumen-speaker", "Consumer Tech", "2025", "桌面音箱产品视觉，突出声波路径、织物材质、金属旋钮和生活场景切换。", ["消费电子", "声波可视化", "材质", "场景动画"]],
-  ["Orbit Camera", "orbit-camera", "Camera System", "2025", "影像设备的产品演示，包含镜头组拆解、传感器细节和稳定器运动。", ["影像设备", "镜头拆解", "稳定器", "官网视频"]],
-  ["Pulse Router", "pulse-router", "Network Device", "2025", "网络硬件的产品动画，用简洁线性数据流表达性能和覆盖范围。", ["网络设备", "数据流", "科技视觉", "产品短片"]],
-  ["Tera Dock", "tera-dock", "Accessory Film", "2024", "扩展坞产品的功能演示，将接口、散热、桌面秩序和材质细节做成连续镜头。", ["配件", "功能演示", "桌面科技", "硬表面"]],
-  ["Arc Tablet", "arc-tablet", "Tablet Motion", "2024", "平板设备的官网首屏视频，重点呈现边框、屏幕层级和多任务界面过渡。", ["平板", "官网首屏", "界面过渡", "产品渲染"]],
-  ["Signal Watch", "signal-watch", "Watch UI Film", "2024", "智能手表视觉系统，结合表盘动效、健康数据和传感器结构。", ["手表", "表盘动效", "健康数据", "UI 系统"]],
-  ["Prism Headset", "prism-headset", "Spatial Product", "2024", "空间计算设备的视觉探索，以镜片反射、头显结构和沉浸式 UI 为核心。", ["头显", "空间计算", "镜片", "沉浸界面"]],
-  ["Forge Laptop", "forge-laptop", "Laptop Launch", "2024", "高性能笔记本发布动画，围绕屏幕展开、键盘背光、芯片模块和散热路径组织镜头。", ["笔记本", "芯片", "散热", "Launch Film"]],
-  ["Motive Bike", "motive-bike", "Mobility Film", "2024", "电助力自行车产品片，强调车架线条、电机结构和城市通勤镜头。", ["出行产品", "车架", "电机", "城市镜头"]],
-  ["Ion Charger", "ion-charger", "Charging System", "2023", "充电设备系列视觉，用统一的光线和布局表达速度、安全与模块化。", ["充电设备", "系列化", "模块", "产品 KV"]],
-  ["Rift Monitor", "rift-monitor", "Display Launch", "2023", "显示器产品动画，呈现屏幕曲率、接口区域、支架结构和色彩状态。", ["显示器", "屏幕", "支架", "发布视觉"]],
-  ["Flux Keyboard", "flux-keyboard", "Input Device", "2023", "机械键盘产品片，突出键帽材质、轴体结构、背光状态和桌面组合。", ["键盘", "机械结构", "背光", "桌面科技"]],
-  ["Vela Lamp", "vela-lamp", "Smart Home", "2023", "智能灯具动态视觉，使用柔和明暗变化呈现光域、控制界面和材质过渡。", ["智能家居", "灯光", "控制界面", "产品动画"]],
-  ["Core Mini", "core-mini", "Compact Device", "2023", "小型计算设备的产品短片，强调紧凑结构、接口布局和高性能暗示。", ["迷你主机", "接口", "结构", "官网视频"]],
-  ["Aero Station", "aero-station", "Industrial Design", "2023", "工业风工作站视觉，结合金属外壳、模块插拔和工作流场景。", ["工作站", "工业设计", "模块化", "产品展示"]],
-] as const
+function getRole(title: string) {
+  if (title.includes("热泵") || title.includes("水泵") || title.includes("盐机")) {
+    return "Product TVC"
+  }
 
-export const fallbackProjects: PortfolioProject[] = projectSeeds.map((project, index) => ({
-  title: project[0],
-  slug: project[1],
-  role: project[2],
-  year: project[3],
-  videoUrl: `https://www.youtube.com/watch?v=VIDEOID${String(index + 1).padStart(4, "0")}`,
-  description: project[4],
-  tags: [...project[5]],
-  images: imagePool[index % imagePool.length],
+  if (title.includes("水下机器人") || title.includes("割草")) {
+    return "Robotics Film"
+  }
+
+  if (title.includes("中控") || title.includes("Igarden")) {
+    return "Interface Motion"
+  }
+
+  if (title.includes("企业宣传") || title.includes("Lifestyle") || title.includes("CES") || title.includes("合集")) {
+    return "Brand Film"
+  }
+
+  return "Commercial 3D Motion"
+}
+
+function getTags(title: string) {
+  const tags = ["3D 动效", "TVC 影像"]
+
+  if (title.includes("热泵")) {
+    tags.push("热泵", "工业产品")
+  } else if (title.includes("水泵")) {
+    tags.push("水泵", "产品渲染")
+  } else if (title.includes("水下机器人")) {
+    tags.push("水下机器人", "硬核功能解构")
+  } else if (title.includes("割草")) {
+    tags.push("割草机器人", "智能硬件")
+  } else if (title.includes("中控") || title.includes("Igarden")) {
+    tags.push("交互动效", "控制系统")
+  } else if (title.includes("企业宣传") || title.includes("Lifestyle") || title.includes("CES") || title.includes("合集")) {
+    tags.push("品牌影像", "商业发布")
+  } else {
+    tags.push("产品渲染", "动态视觉")
+  }
+
+  return tags
+}
+
+function getDescription(title: string) {
+  return `${title} 的商业3D产品动效与 TVC 影像，围绕产品结构、核心功能、材质光影和品牌调性组织镜头。`
+}
+
+function getSlug(video: PortfolioVideo, index: number) {
+  return `work-${String(index + 1).padStart(2, "0")}-${video.id.toLowerCase()}`
+}
+
+function getDateCode(title: string) {
+  const match = title.match(/^(\d{6})/)
+  return match ? Number(match[1]) : 0
+}
+
+const orderedPortfolioVideos = portfolioVideos
+  .map((video, originalIndex) => ({ video, originalIndex }))
+  .sort((a, b) => getDateCode(b.video.title) - getDateCode(a.video.title))
+
+export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map(({ video, originalIndex }) => ({
+  title: video.title,
+  slug: getSlug(video, originalIndex),
+  role: getRole(video.title),
+  year: video.year,
+  videoUrl: video.videoUrl,
+  description: getDescription(video.title),
+  tags: getTags(video.title),
+  images: [
+    {
+      src: `/thumbnails/work-${String(originalIndex + 1).padStart(2, "0")}.jpg`,
+      alt: `${video.title} 视频静帧封面`,
+      width: video.thumbnailWidth,
+      height: video.thumbnailHeight,
+    },
+  ],
 }))

@@ -16,7 +16,7 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
     <img
       src={heroImageSource}
       alt={heroImage.alt}
-      class="media-quiet absolute inset-0 -z-20 h-full w-full object-cover opacity-70 animate-slow-drift"
+      class="absolute inset-0 -z-20 h-full w-full object-cover opacity-70 animate-slow-drift"
       loading="eager"
     />
     <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.72)_68%,rgb(8,8,8))]"></div>
@@ -25,10 +25,10 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
     <div class="mx-auto flex min-h-[calc(96svh-9rem)] max-w-6xl flex-col items-center justify-center text-center">
       <p class="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/60">Motion Atelier</p>
       <h1 class="text-balance max-w-5xl text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
-        让科技产品拥有发布级画面。
+        Motion PortFolio
       </h1>
       <p class="mt-6 max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
-        3D 产品动画、硬表面渲染、界面动态与官网首屏视频，为硬件与科技品牌建立更清晰的第一印象。
+        3D 产品动画、AIGC、界面动态与官网首屏视频，为硬件与科技品牌建立更清晰的第一印象。
       </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
         <a
@@ -49,9 +49,9 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
 
     <div class="mx-auto grid max-w-6xl gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-white sm:grid-cols-3">
       {[
-        ["Film", "产品发布片 / 官网首屏视频"],
-        ["Render", "8K 静帧 / 产品 KV / 材质灯光"],
-        ["Motion", "界面动效 / 拆解动画 / 转场系统"],
+        ["Film", "商业 TVC / 品牌发布会视频 / 官网主视觉片"],
+        ["Render", "产品渲染 / 概念静帧 / 场景设计"],
+        ["Motion", "硬核功能解构 / 交互动效 / 3D 动态视觉"],
       ].map(([title, body]) => (
         <div class="bg-black/36 p-5 backdrop-blur-xl">
           <p class="text-sm font-medium">{title}</p>
@@ -67,10 +67,10 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
         <div class="mb-12 max-w-3xl">
           <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Selected Work</p>
           <h2 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
-            二十个项目，统一成一套清晰的视觉语言。
+            解构工业美学，<br />统一于硬核的视觉语言。
           </h2>
           <p class="mt-5 text-base leading-7 text-muted-foreground">
-            每张作品卡片都预留 YouTube 嵌入位置。把项目数据里的 videoUrl 换成你的 YouTube 上传链接后，卡片会直接显示视频。
+            精选近年商业3D产品动效与 TVC 影像，在光影与质感之间，用纯粹的动态视觉解构每一个产品的核心卖点。
           </p>
         </div>
       </FadeIn>

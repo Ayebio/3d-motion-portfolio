@@ -52,7 +52,7 @@ const portfolioVideos: PortfolioVideo[] = [
   { id: "Jg4NlfRlo8w", title: "241231_Power热泵", year: "2024", videoUrl: "https://youtu.be/Jg4NlfRlo8w", thumbnailWidth: 1280, thumbnailHeight: 720 },
   { id: "zGIfQZ3O5FU", title: "250204_RTK视觉割草机", year: "2025", videoUrl: "https://youtu.be/zGIfQZ3O5FU", thumbnailWidth: 1280, thumbnailHeight: 720 },
   { id: "-ySnmqpeko4", title: "250219_Lifestyle", year: "2025", videoUrl: "https://youtu.be/-ySnmqpeko4", thumbnailWidth: 1280, thumbnailHeight: 720 },
-  { id: "NwEumpzzvRI", title: "230303_暖通热泵-01", year: "2023", videoUrl: "https://youtu.be/NwEumpzzvRI", thumbnailWidth: 1280, thumbnailHeight: 720 },
+  { id: "NwEumpzzvRI", title: "250303_暖通热泵-01", year: "2025", videoUrl: "https://youtu.be/NwEumpzzvRI", thumbnailWidth: 1280, thumbnailHeight: 720 },
   { id: "82qjZGJv_Mk", title: "250409_勒芒-01", year: "2025", videoUrl: "https://youtu.be/82qjZGJv_Mk", thumbnailWidth: 1280, thumbnailHeight: 720 },
   { id: "f18Cvt1J70k", title: "250424_IEW合集-01", year: "2025", videoUrl: "https://youtu.be/f18Cvt1J70k", thumbnailWidth: 1280, thumbnailHeight: 720 },
   { id: "JopwBrujYL0", title: "250429_勒芒热泵", year: "2025", videoUrl: "https://youtu.be/JopwBrujYL0", thumbnailWidth: 1280, thumbnailHeight: 720 },

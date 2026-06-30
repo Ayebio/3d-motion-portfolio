@@ -1,0 +1,32 @@
+---
+import { ArrowLeft } from "lucide-react"
+
+import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getPortfolioEntries } from "@/lib/contentful"
+
+const projects = await getPortfolioEntries()
+---
+
+<BaseLayout title="Archive | Motion Atelier">
+  <section class="px-6 py-24">
+    <div class="mx-auto max-w-6xl">
+      <a
+        href="/#work"
+        class="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-muted-foreground outline-none hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
+      >
+        <ArrowLeft className="size-4" aria-hidden="true" />
+        返回精选案例
+      </a>
+
+      <div class="mb-12 mt-10 max-w-3xl">
+        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Archive</p>
+        <h1 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
+          全部项目归档
+        </h1>
+      </div>
+
+      <PortfolioGrid projects={projects} />
+    </div>
+  </section>
+</BaseLayout>

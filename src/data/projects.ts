@@ -15,6 +15,7 @@ export interface PortfolioProject {
   deliverables?: string
   year: string
   videoUrl: string
+  bilibiliUrl?: string
   description: string
   tags: string[]
   images: PortfolioImage[]
@@ -25,6 +26,7 @@ interface PortfolioVideo {
   title: string
   year: string
   videoUrl: string
+  bilibiliUrl?: string
   thumbnailWidth: number
   thumbnailHeight: number
 }
@@ -179,6 +181,7 @@ export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map((
   deliverables: getDeliverables(video.title),
   year: video.year,
   videoUrl: video.videoUrl,
+  bilibiliUrl: video.bilibiliUrl,
   description: getDescription(video.title),
   tags: getTags(video.title),
   images: [

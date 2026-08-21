@@ -1,9 +1,9 @@
 ---
-import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film } from "lucide-react"
+import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film, ExternalLink } from "lucide-react"
 
+import { VideoPlayer } from "@/components/video/VideoPlayer"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { getPortfolioEntries } from "@/lib/contentful"
-import { getYouTubeEmbedUrl } from "@/lib/video"
 import type { PortfolioProject } from "@/data/projects"
 
 export async function getStaticPaths() {
@@ -29,7 +29,6 @@ interface Props {
 const { project, prevProject, nextProject } = Astro.props
 const heroImage = project.images[0]
 const heroImageSrc = typeof heroImage.src === "string" ? heroImage.src : heroImage.src.src
-const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
 
 function getProjectImageSrc(p: PortfolioProject) {
   const img = p.images[0]
@@ -45,6 +44,7 @@ function getProjectImageSrc(p: PortfolioProject) {
         src={heroImageSrc}
         alt={heroImage.alt}
         class="absolute inset-0 -z-20 h-full w-full object-cover opacity-60 filter blur-sm scale-105"
+        loading="eager"
       />
       <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.85)_75%,rgb(8,8,8))]"></div>
 
@@ -81,28 +81,15 @@ function getProjectImageSrc(p: PortfolioProject) {
     {/* Video & Specs Section */}
     <section class="px-6 py-12">
       <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_360px]">
-        {/* Main Video Box */}
+        {/* Main Video Box with Dual Bilibili / YouTube Route */}
         <div class="space-y-6">
-          <div class="overflow-hidden rounded-xl bg-card border border-border/80 shadow-2xl">
-            <div class="aspect-video bg-black relative">
-              {embedUrl ? (
-                <iframe
-                  class="h-full w-full"
-                  src={embedUrl}
-                  title={`${project.title} 视频播放`}
-                  loading="eager"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-              ) : (
-                <img
-                  src={heroImageSrc}
-                  alt={heroImage.alt}
-                  class="h-full w-full object-cover"
-                />
-              )}
-            </div>
-          </div>
+          <VideoPlayer
+            client:load
+            title={project.title}
+            videoUrl={project.videoUrl}
+            bilibiliUrl={project.bilibiliUrl}
+            posterUrl={heroImageSrc}
+          />
 
           <div class="rounded-xl border border-border/60 bg-card/60 p-6 backdrop-blur-xl">
             <h2 class="text-base font-semibold text-foreground flex items-center gap-2">

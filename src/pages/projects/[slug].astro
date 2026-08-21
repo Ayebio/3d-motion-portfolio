@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film, ExternalLink } from "lucide-react"
+import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film, ExternalLink, Tv } from "lucide-react"
 
 import { VideoPlayer } from "@/components/video/VideoPlayer"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -162,7 +162,16 @@ function getProjectImageSrc(p: PortfolioProject) {
               </div>
             </div>
 
-            <div class="pt-2">
+            <div class="pt-2 space-y-2">
+              <a
+                href={project.bilibiliUrl || "https://space.bilibili.com/20890448"}
+                target="_blank"
+                rel="noreferrer"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-500/15 text-sky-400 border border-sky-500/30 px-4 py-2.5 text-xs font-medium hover:bg-sky-500/25 active:scale-95 transition-all shadow-sm"
+              >
+                <Tv className="size-3.5" aria-hidden="true" />
+                在 Bilibili 播放
+              </a>
               <a
                 href={project.videoUrl}
                 target="_blank"

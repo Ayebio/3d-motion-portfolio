@@ -123,12 +123,12 @@ export function ContactInfo() {
             <ExternalLink className="size-3 text-muted-foreground" />
           </a>
           <a
-            href="https://www.bilibili.com"
+            href="https://space.bilibili.com/20890448"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/40 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary transition"
           >
-            Bilibili
+            Bilibili 个人空间
             <ExternalLink className="size-3 text-muted-foreground" />
           </a>
           <a

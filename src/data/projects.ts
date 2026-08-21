@@ -16,6 +16,7 @@ export interface PortfolioProject {
   year: string
   videoUrl: string
   bilibiliUrl?: string
+  videoSrc?: string
   description: string
   tags: string[]
   images: PortfolioImage[]
@@ -182,6 +183,7 @@ export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map((
   year: video.year,
   videoUrl: video.videoUrl,
   bilibiliUrl: video.bilibiliUrl,
+  videoSrc: `/videos/work-${String(originalIndex + 1).padStart(2, "0")}.mp4`,
   description: getDescription(video.title),
   tags: getTags(video.title),
   images: [

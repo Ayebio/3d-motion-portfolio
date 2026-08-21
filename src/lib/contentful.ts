@@ -83,6 +83,8 @@ function normalizeEntry(fields: PortfolioEntryFields, index: number): PortfolioP
     deliverables: fallback.deliverables,
     year: fields.year || fallback.year,
     videoUrl: fields.videoUrl || fallback.videoUrl,
+    bilibiliUrl: fallback.bilibiliUrl,
+    videoSrc: fallback.videoSrc,
     description: fields.description || fallback.description,
     tags: fields.tags?.length ? fields.tags : fallback.tags,
     images: images?.length ? images : fallback.images,

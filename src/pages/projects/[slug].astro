@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film, ExternalLink, Tv } from "lucide-react"
+import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film } from "lucide-react"
 
 import { VideoPlayer } from "@/components/video/VideoPlayer"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -81,13 +81,11 @@ function getProjectImageSrc(p: PortfolioProject) {
     {/* Video & Specs Section */}
     <section class="px-6 py-12">
       <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_360px]">
-        {/* Main Video Box with Dual Bilibili / YouTube Route */}
+        {/* Main Video Box */}
         <div class="space-y-6">
           <VideoPlayer
             client:load
             title={project.title}
-            videoUrl={project.videoUrl}
-            bilibiliUrl={project.bilibiliUrl}
             videoSrc={project.videoSrc}
             posterUrl={heroImageSrc}
           />
@@ -116,7 +114,7 @@ function getProjectImageSrc(p: PortfolioProject) {
                   <Briefcase className="size-3.5" />
                   品牌 / 客户
                 </p>
-                <p class="mt-1 font-medium text-foreground">{project.client || "商业项目"}</p>
+                <p class="mt-1 font-medium text-foreground">{project.client || "商业客户"}</p>
               </div>
 
               <div class="pt-3">
@@ -132,18 +130,16 @@ function getProjectImageSrc(p: PortfolioProject) {
                   <Monitor className="size-3.5" />
                   交付规格
                 </p>
-                <p class="mt-1 text-xs text-foreground font-mono leading-relaxed">
-                  {project.deliverables || "1080P 30帧"}
-                </p>
+                <p class="mt-1 font-mono text-xs text-foreground/90">{project.deliverables || "1080P 30帧"}</p>
               </div>
 
               <div class="pt-3">
-                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5 mb-1.5">
                   <Layers className="size-3.5" />
                   软件与技术栈
                 </p>
                 <div class="mt-2 flex flex-wrap gap-1.5">
-                  {(project.tools || ["Cinema 4D", "Octane", "After Effects"]).map((tool) => (
+                  {(project.tools || ["Cinema 4D", "Octane Render", "After Effects"]).map((tool) => (
                     <span class="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground border border-border/60">
                       {tool}
                     </span>
@@ -163,24 +159,12 @@ function getProjectImageSrc(p: PortfolioProject) {
               </div>
             </div>
 
-            <div class="pt-2 space-y-2">
+            <div class="pt-2">
               <a
-                href={project.bilibiliUrl || "https://space.bilibili.com/20890448"}
-                target="_blank"
-                rel="noreferrer"
-                class="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-500/15 text-sky-400 border border-sky-500/30 px-4 py-2.5 text-xs font-medium hover:bg-sky-500/25 active:scale-95 transition-all shadow-sm"
-              >
-                <Tv className="size-3.5" aria-hidden="true" />
-                在 Bilibili 播放
-              </a>
-              <a
-                href={project.videoUrl}
-                target="_blank"
-                rel="noreferrer"
+                href="/contact"
                 class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-90 active:scale-95 transition-all shadow-md"
               >
-                <Play className="size-3.5 fill-current" aria-hidden="true" />
-                在 YouTube 查看原片
+                预约档期 / 商务合作
               </a>
             </div>
           </div>

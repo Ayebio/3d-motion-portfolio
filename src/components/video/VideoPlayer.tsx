@@ -96,9 +96,10 @@ export function VideoPlayer({ title, videoUrl, bilibiliUrl, posterUrl }: VideoPl
         {hasStartedPlaying && playerSource === "bilibili" && (
           bilibiliEmbedUrl ? (
             <iframe
-              src={`${bilibiliEmbedUrl}&autoplay=1`}
+              src={bilibiliEmbedUrl}
               title={`${title} Bilibili 播放器`}
               className="h-full w-full border-0"
+              referrerPolicy="no-referrer"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

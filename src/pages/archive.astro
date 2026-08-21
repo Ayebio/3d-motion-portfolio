@@ -20,13 +20,16 @@ const projects = await getPortfolioEntries()
       </a>
 
       <div class="mb-12 mt-10 max-w-3xl">
-        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Archive</p>
+        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Complete Archive / 全部作品</p>
         <h1 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
           全部项目归档
         </h1>
+        <p class="mt-3 text-sm text-muted-foreground">
+          收录历年 {projects.length} 部商业 TVC、工业产品三维动效、机器人与界面交互视觉作品。
+        </p>
       </div>
 
-      <PortfolioGrid projects={projects} />
+      <PortfolioGrid client:load projects={projects} />
     </div>
   </section>
 </BaseLayout>

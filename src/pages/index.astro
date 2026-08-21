@@ -13,20 +13,20 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
 ---
 
 <BaseLayout title="3D 产品动态设计师作品集 | Motion Atelier">
-  <section class="relative isolate min-h-[96svh] overflow-hidden px-6 pb-12 pt-24">
+  <section class="relative isolate min-h-[96svh] overflow-hidden px-6 pb-16 pt-24">
     <img
       src={heroImageSource}
       alt={heroImage.alt}
-      class="absolute inset-0 -z-20 h-full w-full object-cover opacity-70 animate-slow-drift"
+      class="absolute inset-0 -z-20 h-full w-full object-cover opacity-60 animate-slow-drift filter contrast-105 brightness-90"
       loading="eager"
     />
-    <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.72)_68%,rgb(8,8,8))]"></div>
-    <div class="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/70 to-transparent"></div>
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.75)_65%,rgb(8,8,8))]"></div>
+    <div class="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/80 to-transparent"></div>
 
     <div class="mx-auto flex min-h-[calc(96svh-9rem)] max-w-6xl flex-col items-center justify-center text-center">
       <p class="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/60">Motion Atelier</p>
       <h1 class="text-balance max-w-5xl text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
-        Motion PortFolio
+        Motion Portfolio
       </h1>
       <p class="mt-6 max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
         3D 产品动画、AIGC、界面动态与官网首屏视频，为硬件与科技品牌建立更清晰的第一印象。
@@ -48,24 +48,24 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
       </div>
     </div>
 
-    <div class="mx-auto grid max-w-6xl gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-white sm:grid-cols-3">
+    <div class="mx-auto grid max-w-6xl gap-4 text-white sm:grid-cols-3">
       {[
         ["Film", "商业 TVC / 品牌发布会视频 / 官网主视觉片"],
         ["Render", "产品渲染 / 概念静帧 / 场景设计"],
         ["Motion", "硬核功能解构 / 交互动效 / 3D 动态视觉"],
       ].map(([title, body]) => (
-        <div class="bg-black/36 p-5 backdrop-blur-xl">
+        <div class="rounded-md border border-white/10 bg-black/36 p-6 backdrop-blur-xl sm:p-8">
           <p class="text-sm font-medium">{title}</p>
-          <p class="mt-2 text-sm text-white/58">{body}</p>
+          <p class="mt-4 text-sm leading-6 text-white/58">{body}</p>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="work" class="px-6 py-24">
+  <section id="work" class="px-6 py-32">
     <div class="mx-auto max-w-6xl">
       <FadeIn client:visible>
-        <div class="mb-12 max-w-3xl">
+        <div class="mb-16 max-w-3xl">
           <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Selected Works / 精选案例</p>
           <h2 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
             解构工业美学，<br />统一于硬核的视觉语言。
@@ -76,13 +76,13 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
         </div>
       </FadeIn>
 
-      <PortfolioGrid projects={selectedProjects} />
-      <div class="mt-10 flex justify-center">
+      <PortfolioGrid client:load projects={selectedProjects} />
+      <div class="mt-14 flex justify-center">
         <a
           href="/archive"
           class="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm font-medium text-foreground outline-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-[0.98]"
         >
-          查看全部项目
+          查看全部项目 ({projects.length})
         </a>
       </div>
     </div>

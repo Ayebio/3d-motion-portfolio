@@ -1,37 +1,20 @@
 ---
 import { ContactForm } from "@/components/contact/ContactForm"
+import { ContactInfo } from "@/components/contact/ContactInfo"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 ---
 
-<BaseLayout title="联系 | 3D 产品动态设计师作品集">
-  <section class="px-6 pb-24 pt-32">
-    <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-      <div>
-        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Contact</p>
-        <h1 class="mt-4 text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-7xl">
-          把新产品讲清楚。
-        </h1>
-        <p class="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
-          适合产品新品发布、官网首屏视频、展会屏幕、App / 设备界面动效与产品主视觉。请留下项目范围，我会按目标、周期和交付格式回复。
-        </p>
-
-        <div class="mt-10 grid gap-6 border-t border-border pt-8 text-sm">
-          <div>
-            <p class="text-muted-foreground">邮箱</p>
-            <p class="mt-1 font-medium text-foreground">2872594253@qq.com</p>
-          </div>
-          <div>
-            <p class="text-muted-foreground">地点</p>
-            <p class="mt-1 font-medium text-foreground">广州 / 远程协作</p>
-          </div>
-          <div>
-            <p class="text-muted-foreground">响应</p>
-            <p class="mt-1 font-medium text-foreground">1-2 个工作日内回复</p>
-          </div>
+<BaseLayout title="联系合作 | 3D 产品动态设计作品集">
+  <section class="px-6 pb-24 pt-28">
+    <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+      <ContactInfo client:load />
+      <div class="space-y-4">
+        <div class="mb-2">
+          <h2 class="text-lg font-semibold text-foreground">在线发送项目需求</h2>
+          <p class="text-xs text-muted-foreground">填写基本信息与产品类型，我们将评估周期与方案并及时答复</p>
         </div>
+        <ContactForm client:load />
       </div>
-
-      <ContactForm client:load />
     </div>
   </section>
 </BaseLayout>

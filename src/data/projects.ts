@@ -9,6 +9,10 @@ export interface PortfolioProject {
   title: string
   slug: string
   role: string
+  category: string
+  client?: string
+  tools: string[]
+  deliverables?: string
   year: string
   videoUrl: string
   description: string
@@ -88,6 +92,44 @@ function getRole(title: string) {
   return "Commercial 3D Motion"
 }
 
+function getCategory(title: string) {
+  if (title.includes("水下机器人") || title.includes("割草")) {
+    return "机器人 / 硬件"
+  }
+  if (title.includes("中控") || title.includes("Igarden")) {
+    return "界面动效"
+  }
+  if (title.includes("企业宣传") || title.includes("Lifestyle") || title.includes("CES") || title.includes("合集")) {
+    return "品牌影像"
+  }
+  return "商业 TVC"
+}
+
+function getClient(title: string) {
+  if (title.includes("Aquark")) return "Aquark"
+  if (title.includes("Fairland")) return "Fairland"
+  if (title.includes("吉尼斯")) return "Guinness / Fairland"
+  if (title.includes("CES")) return "CES Exhibition"
+  return "Commercial Client"
+}
+
+function getTools(title: string) {
+  if (title.includes("水下机器人") || title.includes("割草")) {
+    return ["Cinema 4D", "Octane Render", "Houdini", "After Effects", "Substance 3D"]
+  }
+  if (title.includes("中控") || title.includes("Igarden")) {
+    return ["Cinema 4D", "After Effects", "Figma", "Redshift"]
+  }
+  if (title.includes("企业宣传") || title.includes("Lifestyle") || title.includes("合集")) {
+    return ["Cinema 4D", "Octane Render", "Premiere Pro", "DaVinci Resolve"]
+  }
+  return ["Cinema 4D", "Octane Render", "After Effects", "Photoshop"]
+}
+
+function getDeliverables(title: string) {
+  return "1080P 30帧"
+}
+
 function getTags(title: string) {
   const tags = ["3D 动效", "TVC 影像"]
 
@@ -131,6 +173,10 @@ export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map((
   title: video.title,
   slug: getSlug(video, originalIndex),
   role: getRole(video.title),
+  category: getCategory(video.title),
+  client: getClient(video.title),
+  tools: getTools(video.title),
+  deliverables: getDeliverables(video.title),
   year: video.year,
   videoUrl: video.videoUrl,
   description: getDescription(video.title),

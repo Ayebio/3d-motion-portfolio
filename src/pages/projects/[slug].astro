@@ -1,6 +1,5 @@
 ---
-import { Image } from "astro:assets"
-import { ArrowLeft, Play } from "lucide-react"
+import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film } from "lucide-react"
 
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { getPortfolioEntries } from "@/lib/contentful"
@@ -10,94 +9,243 @@ import type { PortfolioProject } from "@/data/projects"
 export async function getStaticPaths() {
   const projects = await getPortfolioEntries()
 
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }))
+  return projects.map((project, index) => {
+    const prevProject = index > 0 ? projects[index - 1] : projects[projects.length - 1]
+    const nextProject = index < projects.length - 1 ? projects[index + 1] : projects[0]
+
+    return {
+      params: { slug: project.slug },
+      props: { project, prevProject, nextProject },
+    }
+  })
 }
 
-const { project } = Astro.props as { project: PortfolioProject }
+interface Props {
+  project: PortfolioProject
+  prevProject: PortfolioProject
+  nextProject: PortfolioProject
+}
+
+const { project, prevProject, nextProject } = Astro.props
 const heroImage = project.images[0]
+const heroImageSrc = typeof heroImage.src === "string" ? heroImage.src : heroImage.src.src
 const embedUrl = getYouTubeEmbedUrl(project.videoUrl)
+
+function getProjectImageSrc(p: PortfolioProject) {
+  const img = p.images[0]
+  return typeof img.src === "string" ? img.src : img.src.src
+}
 ---
 
-<BaseLayout title={`${project.title} | 作品详情`}>
+<BaseLayout title={`${project.title} | 3D Motion Portfolio`}>
   <article class="pb-24">
-    <section class="relative isolate min-h-[78svh] overflow-hidden px-6 pb-12 pt-28">
-      <Image
-        src={heroImage.src}
+    {/* Hero Section */}
+    <section class="relative isolate min-h-[72svh] overflow-hidden px-6 pb-12 pt-28">
+      <img
+        src={heroImageSrc}
         alt={heroImage.alt}
-        width={heroImage.width}
-        height={heroImage.height}
-        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-76"
+        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-60 filter blur-sm scale-105"
       />
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.74)_72%,rgb(8,8,8))]"></div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.85)_75%,rgb(8,8,8))]"></div>
 
-      <div class="mx-auto flex min-h-[calc(78svh-10rem)] max-w-6xl flex-col justify-end">
+      <div class="mx-auto flex min-h-[calc(72svh-10rem)] max-w-6xl flex-col justify-end">
         <a
           href="/#work"
-          class="mb-8 inline-flex w-fit items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-sm text-white/78 outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/50 active:scale-95"
+          class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white transition-all active:scale-95"
         >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          返回作品
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          返回全部作品
         </a>
-        <p class="text-xs font-medium uppercase tracking-[0.28em] text-white/58">{project.role}</p>
-        <h1 class="mt-4 max-w-4xl text-balance text-6xl font-semibold tracking-tight text-white sm:text-8xl">
+
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="rounded-full bg-primary/90 px-3 py-1 text-xs font-medium text-primary-foreground shadow-sm">
+            {project.role}
+          </span>
+          <span class="rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-medium text-white/80 border border-white/10">
+            {project.category}
+          </span>
+          <span class="rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-mono text-white/80 border border-white/10">
+            {project.year}
+          </span>
+        </div>
+
+        <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           {project.title}
         </h1>
-        <p class="mt-6 max-w-2xl text-base leading-8 text-white/72">{project.description}</p>
+        <p class="mt-4 max-w-3xl text-sm sm:text-base leading-relaxed text-white/75">
+          {project.description}
+        </p>
       </div>
     </section>
 
-    <section class="px-6 py-16">
-      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-        <aside class="grid content-start gap-6 text-sm">
-          <div>
-            <p class="text-muted-foreground">年份</p>
-            <p class="mt-1 font-medium text-foreground">{project.year}</p>
-          </div>
-          <div>
-            <p class="text-muted-foreground">范围</p>
-            <div class="mt-2 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span class="rounded-md border border-border px-2.5 py-1 text-xs text-foreground">{tag}</span>
-              ))}
-            </div>
-          </div>
-          <a
-            href={project.videoUrl}
-            target="_blank"
-            rel="noreferrer"
-            class="inline-flex w-fit items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none hover:opacity-86 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
-          >
-            <Play className="size-4" aria-hidden="true" />
-            打开 YouTube
-          </a>
-        </aside>
-
-        <div class="grid gap-5">
-          <section class="overflow-hidden rounded-md bg-card ring-1 ring-border/70">
-            <div class="aspect-video bg-secondary">
+    {/* Video & Specs Section */}
+    <section class="px-6 py-12">
+      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_360px]">
+        {/* Main Video Box */}
+        <div class="space-y-6">
+          <div class="overflow-hidden rounded-xl bg-card border border-border/80 shadow-2xl">
+            <div class="aspect-video bg-black relative">
               {embedUrl ? (
                 <iframe
                   class="h-full w-full"
                   src={embedUrl}
-                  title={`${project.title} YouTube 视频`}
-                  loading="lazy"
+                  title={`${project.title} 视频播放`}
+                  loading="eager"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
               ) : (
-                <Image
-                  src={heroImage.src}
+                <img
+                  src={heroImageSrc}
                   alt={heroImage.alt}
-                  width={heroImage.width}
-                  height={heroImage.height}
                   class="h-full w-full object-cover"
                 />
               )}
             </div>
-          </section>
+          </div>
+
+          <div class="rounded-xl border border-border/60 bg-card/60 p-6 backdrop-blur-xl">
+            <h2 class="text-base font-semibold text-foreground flex items-center gap-2">
+              <Film className="size-4 text-primary" />
+              镜头与视觉语言解析
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+              本项目聚焦于产品核心工业构造与核心卖点展示，通过纯粹硬核的三维光影解构、材质质感打磨与精准运动节奏，建立高端、前沿的品牌科技感。
+            </p>
+          </div>
+        </div>
+
+        {/* Sidebar Specifications */}
+        <aside class="space-y-6">
+          <div class="rounded-xl border border-border/70 bg-card/70 p-6 backdrop-blur-xl space-y-5">
+            <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Project Specs / 项目参数
+            </h3>
+
+            <div class="space-y-4 text-sm divide-y divide-border/60">
+              <div class="pt-3 first:pt-0">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <Briefcase className="size-3.5" />
+                  品牌 / 客户
+                </p>
+                <p class="mt-1 font-medium text-foreground">{project.client || "商业项目"}</p>
+              </div>
+
+              <div class="pt-3">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <Calendar className="size-3.5" />
+                  年份
+                </p>
+                <p class="mt-1 font-medium text-foreground">{project.year}</p>
+              </div>
+
+              <div class="pt-3">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <Monitor className="size-3.5" />
+                  交付规格
+                </p>
+                <p class="mt-1 text-xs text-foreground font-mono leading-relaxed">
+                  {project.deliverables || "1080P 30帧"}
+                </p>
+              </div>
+
+              <div class="pt-3">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <Layers className="size-3.5" />
+                  软件与技术栈
+                </p>
+                <div class="mt-2 flex flex-wrap gap-1.5">
+                  {(project.tools || ["Cinema 4D", "Octane", "After Effects"]).map((tool) => (
+                    <span class="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground border border-border/60">
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div class="pt-3">
+                <p class="text-xs text-muted-foreground mb-2">项目标签</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {project.tags.map((tag) => (
+                    <span class="rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a
+                href={project.videoUrl}
+                target="_blank"
+                rel="noreferrer"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-90 active:scale-95 transition-all shadow-md"
+              >
+                <Play className="size-3.5 fill-current" aria-hidden="true" />
+                在 YouTube 查看原片
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    {/* Previous / Next Project Navigation */}
+    <section class="mt-12 border-t border-border/80 px-6 pt-12">
+      <div class="mx-auto max-w-6xl">
+        <p class="text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground text-center mb-8">
+          Explore More Works / 浏览更多作品
+        </p>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          {/* Previous Card */}
+          <a
+            href={`/projects/${prevProject.slug}`}
+            class="group relative flex items-center gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
+          >
+            <div class="relative size-20 shrink-0 overflow-hidden rounded-lg bg-secondary">
+              <img
+                src={getProjectImageSrc(prevProject)}
+                alt={prevProject.title}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+              />
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="flex items-center gap-1 text-[11px] font-medium text-muted-foreground group-hover:text-primary transition-colors">
+                <ArrowLeft className="size-3" />
+                上一部作品
+              </span>
+              <p class="mt-1 truncate text-sm font-semibold text-foreground">
+                {prevProject.title}
+              </p>
+              <p class="text-xs text-muted-foreground">{prevProject.role} · {prevProject.year}</p>
+            </div>
+          </a>
+
+          {/* Next Card */}
+          <a
+            href={`/projects/${nextProject.slug}`}
+            class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
+          >
+            <div class="min-w-0 flex-1 text-left sm:text-right">
+              <span class="flex items-center gap-1 text-[11px] font-medium text-muted-foreground justify-start sm:justify-end group-hover:text-primary transition-colors">
+                下一部作品
+                <ArrowRight className="size-3" />
+              </span>
+              <p class="mt-1 truncate text-sm font-semibold text-foreground">
+                {nextProject.title}
+              </p>
+              <p class="text-xs text-muted-foreground">{nextProject.role} · {nextProject.year}</p>
+            </div>
+            <div class="relative size-20 shrink-0 overflow-hidden rounded-lg bg-secondary order-first sm:order-last">
+              <img
+                src={getProjectImageSrc(nextProject)}
+                alt={nextProject.title}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+              />
+            </div>
+          </a>
         </div>
       </div>
     </section>

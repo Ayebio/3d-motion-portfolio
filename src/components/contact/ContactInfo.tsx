@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Check, Copy, Mail, MessageSquare, MapPin, Clock, Video, ExternalLink } from "lucide-react"
+import { Check, Copy, Mail, MessageSquare, MapPin, Clock, ExternalLink } from "lucide-react"
 
 export function ContactInfo() {
   const [copiedType, setCopiedType] = React.useState<string | null>(null)
@@ -13,19 +13,21 @@ export function ContactInfo() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Contact & Booking</p>
-        <h1 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-          让新产品建立清晰的第一印象。
+        <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
+          Yang Zongye · 三维产品动态设计师
+        </p>
+        <h1 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          让产品在第一时间建立清晰印象。
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-          承接商业 3D 产品 TVC 影像、发布会主视觉、官网首屏视频、工业结构解构动效与智能硬件界面动效。
+          承接商业 3D 产品 TVC、发布会主视觉、官网首屏视频、硬件结构解构、智能界面动效与 AIGC 视觉创作，欢迎直接沟通项目需求。
         </p>
       </div>
 
       {/* Direct Contact Cards */}
       <div className="grid gap-3 sm:grid-cols-2">
         {/* Email Card */}
-        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 backdrop-blur-xl transition hover:border-foreground/30">
+        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/80 p-4 backdrop-blur-xl transition hover:border-foreground/30">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
               <Mail className="size-3.5" />
@@ -58,7 +60,7 @@ export function ContactInfo() {
         </div>
 
         {/* WeChat Card */}
-        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 backdrop-blur-xl transition hover:border-foreground/30">
+        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/80 p-4 backdrop-blur-xl transition hover:border-foreground/30">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
               <MessageSquare className="size-3.5" />
@@ -94,7 +96,7 @@ export function ContactInfo() {
           <MapPin className="size-4 shrink-0 text-primary" />
           <div>
             <p className="font-medium text-foreground">工作地点</p>
-            <p className="mt-0.5">广州 / 全球远程协作</p>
+            <p className="mt-0.5">广州 / 国内外远程协作</p>
           </div>
         </div>
         <div className="flex items-start gap-2">
@@ -106,38 +108,19 @@ export function ContactInfo() {
         </div>
       </div>
 
-      {/* Social Profiles */}
+      {/* Verified Social Profile */}
       <div className="border-t border-border/60 pt-6">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground mb-3">
-          Channels & Portals
+          Video Channel / 视频主页
         </p>
         <div className="flex flex-wrap gap-2">
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/40 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary transition"
-          >
-            <Video className="size-3.5 text-red-500" />
-            YouTube
-            <ExternalLink className="size-3 text-muted-foreground" />
-          </a>
           <a
             href="https://space.bilibili.com/20890448"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/40 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary transition"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/80 px-3.5 py-2 text-xs font-medium text-foreground hover:bg-secondary transition"
           >
-            Bilibili 个人空间
-            <ExternalLink className="size-3 text-muted-foreground" />
-          </a>
-          <a
-            href="https://www.behance.net"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/40 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary transition"
-          >
-            Behance
+            Bilibili 个人空间（国内直连）
             <ExternalLink className="size-3 text-muted-foreground" />
           </a>
         </div>

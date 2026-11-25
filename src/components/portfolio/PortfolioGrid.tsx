@@ -14,10 +14,17 @@ function getImageSource(project: PortfolioProject) {
   return typeof image.src === "string" ? image.src : image.src.src
 }
 
-const CATEGORIES = ["全部", "商业 TVC", "机器人 / 硬件", "界面动效", "品牌影像"] as const
+const CATEGORIES = ["全部", "商业 TVC", "机器人 / 硬件", "界面动效", "品牌影像", "AIGC"] as const
 
 export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProps) {
   const [selectedCategory, setSelectedCategory] = React.useState<string>("全部")
+
+  const visibleCategories = React.useMemo(() => {
+    return CATEGORIES.filter((category) => {
+      if (category === "全部") return true
+      return projects.some((p) => p.category === category)
+    })
+  }, [projects])
 
   const filteredProjects = React.useMemo(() => {
     if (selectedCategory === "全部") {
@@ -29,9 +36,9 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
   return (
     <div className="space-y-10">
       {/* Category Tabs Filter */}
-      {showFilter && (
+      {showFilter && visibleCategories.length > 2 && (
         <div className="flex flex-wrap items-center justify-start sm:justify-center gap-2">
-          {CATEGORIES.map((category) => {
+          {visibleCategories.map((category) => {
             const isSelected = selectedCategory === category
             const count =
               category === "全部"
@@ -59,7 +66,7 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
                 <span className="relative z-10 flex items-center gap-1.5">
                   {category}
                   <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    className={`text-[11px] px-1.5 py-0.2 rounded-full ${
                       isSelected
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-secondary text-muted-foreground"
@@ -74,10 +81,10 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
         </div>
       )}
 
-      {/* Projects Grid: 2 columns on mobile (Bilibili style), 2 on tablet, 3 on desktop */}
+      {/* Projects Grid: 1 column on mobile for legibility, 2 on tablet, 3 on desktop */}
       <motion.div
         layout
-        className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3"
       >
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project) => {
@@ -89,80 +96,77 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
-                className="group relative flex flex-col overflow-hidden rounded-lg bg-card/75 border border-border/80 hover:border-foreground/30 hover:shadow-2xl transition-all duration-300"
+                className="group relative flex flex-col overflow-hidden rounded-xl bg-card/85 border border-border/80 hover:border-foreground/30 hover:shadow-2xl transition-all duration-300"
               >
                 <a
                   href={`/projects/${project.slug}`}
-                  aria-label={`打开 ${project.title} 详情页`}
-                  className="relative block aspect-[16/10] w-full overflow-hidden bg-secondary/80 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  aria-label={`查看 ${project.title} 作品详情`}
+                  className="flex flex-1 flex-col outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
-                  <img
-                    src={getImageSource(project)}
-                    alt={project.images[0].alt}
-                    className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  <div className="relative block aspect-video w-full overflow-hidden bg-secondary/80">
+                    <img
+                      src={getImageSource(project)}
+                      alt={project.images[0].alt}
+                      className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
 
-                  {/* Gradient shadow overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Gradient shadow overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* Top Badge: Category & Year */}
-                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1">
-                    <span className="rounded-full bg-black/65 backdrop-blur-md px-1.5 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[11px] font-medium text-white/90 border border-white/10 shadow-sm">
-                      {project.role}
-                    </span>
+                    {/* Top Badge: Role & Year */}
+                    <div className="absolute top-3 left-3 flex items-center gap-1">
+                      <span className="rounded-full bg-black/70 backdrop-blur-md px-2.5 py-1 text-[11px] font-medium text-white/95 border border-white/15 shadow-sm">
+                        {project.role}
+                      </span>
+                    </div>
+
+                    <div className="absolute top-3 right-3">
+                      <span className="rounded-full bg-black/70 backdrop-blur-md px-2.5 py-1 text-[11px] font-mono text-white/90 border border-white/15">
+                        {project.dateLabel || project.year}
+                      </span>
+                    </div>
+
+                    {/* Center Play Indicator */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-90">
+                      <span className="flex size-12 items-center justify-center rounded-full bg-white/95 text-black shadow-xl backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                        <Play className="ml-0.5 size-5 fill-black" aria-hidden="true" />
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                    <span className="rounded-full bg-black/65 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-1 text-[9px] sm:text-[11px] font-mono text-white/80 border border-white/10">
-                      {project.year}
-                    </span>
-                  </div>
+                  {/* Card Content Footer */}
+                  <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-medium text-muted-foreground truncate">
+                          {project.client || "商业合作项目"}
+                        </p>
+                        {project.tools?.[0] && (
+                          <span className="inline-block shrink-0 text-[11px] font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded border border-border/60">
+                            {project.tools[0]}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="mt-2 line-clamp-1 text-base font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                    </div>
 
-                  {/* Center Play Indicator */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-90">
-                    <span className="flex size-9 sm:size-13 items-center justify-center rounded-full bg-white/95 text-black shadow-xl backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
-                      <Play className="ml-0.5 size-3.5 sm:size-5 fill-black" aria-hidden="true" />
-                    </span>
+                    <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="text-xs text-muted-foreground">
+                          {project.category}
+                        </span>
+                      </div>
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-foreground group-hover:text-primary transition-colors">
+                        查看案例
+                        <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </span>
+                    </div>
                   </div>
                 </a>
-
-                {/* Card Content Footer */}
-                <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4 md:p-5">
-                  <div>
-                    <div className="flex items-center justify-between gap-1">
-                      <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground truncate">
-                        {project.client || "Commercial"}
-                      </p>
-                      {project.tools?.[0] && (
-                        <span className="hidden sm:inline-block text-[10px] font-mono text-muted-foreground/80 bg-secondary px-1.5 py-0.5 rounded border border-border/50">
-                          {project.tools[0]}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="mt-1 sm:mt-2 line-clamp-2 sm:line-clamp-1 text-xs sm:text-base font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                  </div>
-
-                  <div className="mt-2.5 sm:mt-4 flex items-center justify-between border-t border-border/60 pt-2 sm:pt-3">
-                    <div className="flex flex-wrap gap-1">
-                      {project.tags.slice(0, 1).map((tag) => (
-                        <span key={tag} className="text-[9px] sm:text-[10px] text-muted-foreground/90">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                    <a
-                      href={`/projects/${project.slug}`}
-                      className="inline-flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-semibold text-foreground hover:text-primary transition-colors group/link"
-                    >
-                      详情
-                      <ArrowUpRight className="size-3 sm:size-3.5 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-                    </a>
-                  </div>
-                </div>
               </motion.article>
             )
           })}

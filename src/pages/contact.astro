@@ -4,14 +4,14 @@ import { ContactInfo } from "@/components/contact/ContactInfo"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 ---
 
-<BaseLayout title="联系合作 | 3D 产品动态设计作品集">
+<BaseLayout title="联系合作 | Yang Zongye · 三维产品动态设计师">
   <section class="px-6 pb-24 pt-28">
     <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-start">
       <ContactInfo client:load />
       <div class="space-y-4">
         <div class="mb-2">
-          <h2 class="text-lg font-semibold text-foreground">在线发送项目需求</h2>
-          <p class="text-xs text-muted-foreground">填写基本信息与产品类型，我们将评估周期与方案并及时答复</p>
+          <h2 class="text-lg font-semibold text-foreground">发送合作需求</h2>
+          <p class="text-xs text-muted-foreground">填写基本信息与项目需求，提交后可直接调起邮件或一键复制发送微信</p>
         </div>
         <ContactForm client:load />
       </div>

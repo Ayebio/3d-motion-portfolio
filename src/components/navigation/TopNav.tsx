@@ -9,53 +9,79 @@ const navItems = [
   { href: "/", label: "首页" },
   { href: "/#work", label: "精选作品" },
   { href: "/archive", label: "全部归档" },
+  { href: "/about", label: "关于我" },
   { href: "/contact", label: "联系合作" },
 ]
 
-function getInitialTheme() {
-  if (typeof window === "undefined") {
-    return "dark"
+function getClientTheme(): "light" | "dark" {
+  if (typeof document !== "undefined") {
+    return document.documentElement.classList.contains("dark") ? "dark" : "light"
   }
-
-  return window.localStorage.getItem("theme") === "light" ? "light" : "dark"
+  return "dark"
 }
 
 export function TopNav() {
-  const [theme, setTheme] = React.useState(getInitialTheme)
-  const [pathname, setPathname] = React.useState("/")
+  const [theme, setTheme] = React.useState<"light" | "dark">("dark")
+  const [mounted, setMounted] = React.useState(false)
+  const [locationState, setLocationState] = React.useState({ pathname: "/", hash: "" })
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 
   React.useEffect(() => {
-    setPathname(window.location.pathname)
+    setMounted(true)
+    setTheme(getClientTheme())
+
+    const syncLocation = () => {
+      setLocationState({
+        pathname: window.location.pathname,
+        hash: window.location.hash,
+      })
+      setTheme(getClientTheme())
+      setMobileMenuOpen(false)
+    }
+
+    syncLocation()
+    document.addEventListener("astro:page-load", syncLocation)
+    window.addEventListener("hashchange", syncLocation)
+
+    return () => {
+      document.removeEventListener("astro:page-load", syncLocation)
+      window.removeEventListener("hashchange", syncLocation)
+    }
   }, [])
 
-  React.useEffect(() => {
-    const root = document.documentElement
-    root.classList.toggle("dark", theme === "dark")
-    root.dataset.theme = theme
-    window.localStorage.setItem("theme", theme)
-  }, [theme])
+  const toggleTheme = () => {
+    setTheme((current) => {
+      const next = current === "dark" ? "light" : "dark"
+      const root = document.documentElement
+      root.classList.toggle("dark", next === "dark")
+      root.dataset.theme = next
+      window.localStorage.setItem("theme", next)
+      return next
+    })
+  }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3">
-      <nav className="mx-auto flex h-12 max-w-6xl items-center justify-between rounded-md border border-white/10 bg-background/80 px-3 backdrop-blur-2xl dark:bg-black/55 shadow-sm">
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 print:hidden">
+      <nav className="mx-auto flex h-12 max-w-6xl items-center justify-between rounded-md border border-border/80 bg-background/85 px-3 backdrop-blur-2xl dark:bg-black/65 shadow-sm">
         <a
           href="/"
           className="flex items-center gap-2 rounded-md px-2 py-2 text-sm font-semibold tracking-tight text-foreground outline-none hover:opacity-75 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
           aria-label="返回首页"
         >
           <span className="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Motion Portfolio
+          <span>Yang Zongye</span>
+          <span className="hidden sm:inline text-xs font-normal text-muted-foreground">· 3D Motion</span>
         </a>
 
         {/* Desktop Nav Items */}
         <div className="hidden items-center gap-5 sm:flex">
           {navItems.map((item) => {
+            const { pathname, hash } = locationState
             const isActive =
               item.href === "/"
-                ? pathname === "/"
-                : item.href.startsWith("/#")
-                ? pathname === "/"
+                ? pathname === "/" && hash !== "#work"
+                : item.href === "/#work"
+                ? (pathname === "/" && hash === "#work") || pathname.startsWith("/projects/")
                 : pathname.startsWith(item.href)
 
             return (
@@ -79,19 +105,19 @@ export function TopNav() {
             type="button"
             variant="ghost"
             size="icon-sm"
-            aria-label={theme === "dark" ? "切换到浅色模式" : "切换到深色模式"}
-            aria-pressed={theme === "dark"}
-            className="rounded-md text-muted-foreground hover:bg-white/10 hover:text-foreground active:scale-95"
-            onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+            aria-label={mounted && theme === "light" ? "切换到深色模式" : "切换到浅色模式"}
+            aria-pressed={mounted ? theme === "dark" : undefined}
+            className="rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95"
+            onClick={toggleTheme}
           >
-            {theme === "dark" ? <Moon className="size-4" /> : <Sun className="size-4" />}
+            {mounted && theme === "light" ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </Button>
 
           <a
             href="/contact"
             className="hidden sm:inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-85 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
           >
-            开始合作
+            联系合作
             <ArrowUpRight className="size-3" />
           </a>
 

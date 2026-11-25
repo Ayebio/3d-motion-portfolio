@@ -78,6 +78,8 @@ function normalizeEntry(fields: PortfolioEntryFields, index: number): PortfolioP
     slug: fields.slug || fallback.slug,
     role: fields.role || fallback.role,
     category: fallback.category,
+    featured: fallback.featured,
+    dateLabel: fallback.dateLabel,
     client: fallback.client,
     tools: fallback.tools,
     deliverables: fallback.deliverables,

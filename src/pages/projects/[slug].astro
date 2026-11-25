@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft, ArrowRight, Play, Layers, Monitor, Calendar, Briefcase, Film } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Layers, Monitor, Calendar, Briefcase, Tv } from "lucide-react"
 
 import { VideoPlayer } from "@/components/video/VideoPlayer"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -36,43 +36,51 @@ function getProjectImageSrc(p: PortfolioProject) {
 }
 ---
 
-<BaseLayout title={`${project.title} | 3D Motion Portfolio`}>
-  <article class="pb-24">
-    {/* Hero Section */}
-    <section class="relative isolate min-h-[72svh] overflow-hidden px-6 pb-12 pt-28">
-      <img
-        src={heroImageSrc}
-        alt={heroImage.alt}
-        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-60 filter blur-sm scale-105"
-        loading="eager"
-      />
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.85)_75%,rgb(8,8,8))]"></div>
+<BaseLayout title={`${project.title} | Yang Zongye · 三维产品动态设计师`} description={project.description} image={heroImageSrc}>
+  <article class="pb-24 pt-20">
+    {/* Hero Section inside theme-safe dark cinema frame */}
+    <section class="px-4 sm:px-6">
+      <div class="relative isolate mx-auto flex min-h-[46svh] max-w-6xl flex-col justify-end overflow-hidden rounded-2xl border border-border/60 bg-neutral-950 px-6 pb-10 pt-14 shadow-soft-lg sm:px-10 sm:pb-12">
+        <img
+          src={heroImageSrc}
+          alt={heroImage.alt}
+          class="absolute inset-0 -z-20 h-full w-full object-cover opacity-50 filter blur-sm scale-105"
+          loading="eager"
+        />
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(8,8,8,0.4),rgba(8,8,8,0.86)_75%,rgba(8,8,8,0.96))]"></div>
 
-      <div class="mx-auto flex min-h-[calc(72svh-10rem)] max-w-6xl flex-col justify-end">
-        <a
-          href="/#work"
-          class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white transition-all active:scale-95"
-        >
-          <ArrowLeft className="size-3.5" aria-hidden="true" />
-          返回全部作品
-        </a>
+        <div class="mb-6 flex flex-wrap items-center gap-2">
+          <a
+            href="/#work"
+            class="inline-flex w-fit items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3.5 py-1.5 text-xs font-medium text-white/85 backdrop-blur-md hover:bg-white/15 hover:text-white transition-all active:scale-95"
+          >
+            <ArrowLeft className="size-3.5" aria-hidden="true" />
+            返回精选案例
+          </a>
+          <a
+            href="/archive"
+            class="inline-flex w-fit items-center rounded-full border border-white/15 bg-black/30 px-3.5 py-1.5 text-xs font-medium text-white/75 backdrop-blur-md hover:bg-white/15 hover:text-white transition-all active:scale-95"
+          >
+            全部作品归档
+          </a>
+        </div>
 
-        <div class="flex flex-wrap items-center gap-2 mb-3">
-          <span class="rounded-full bg-primary/90 px-3 py-1 text-xs font-medium text-primary-foreground shadow-sm">
+        <div class="mb-3 flex flex-wrap items-center gap-2">
+          <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm">
             {project.role}
           </span>
-          <span class="rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-medium text-white/80 border border-white/10">
+          <span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/85 backdrop-blur-md">
             {project.category}
           </span>
-          <span class="rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-mono text-white/80 border border-white/10">
-            {project.year}
+          <span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-mono text-white/85 backdrop-blur-md">
+            {project.dateLabel || project.year}
           </span>
         </div>
 
-        <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
           {project.title}
         </h1>
-        <p class="mt-4 max-w-3xl text-sm sm:text-base leading-relaxed text-white/75">
+        <p class="mt-4 max-w-3xl text-sm leading-relaxed text-white/80 sm:text-base">
           {project.description}
         </p>
       </div>
@@ -80,33 +88,69 @@ function getProjectImageSrc(p: PortfolioProject) {
 
     {/* Video & Specs Section */}
     <section class="px-6 py-12">
-      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_360px]">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_340px]">
         {/* Main Video Box */}
-        <div class="space-y-6">
+        <div class="space-y-4">
           <VideoPlayer
             client:load
             title={project.title}
             videoSrc={project.videoSrc}
             posterUrl={heroImageSrc}
+            bilibiliUrl={project.bilibiliUrl}
+            youtubeUrl={project.videoUrl}
           />
 
-          <div class="rounded-xl border border-border/60 bg-card/60 p-6 backdrop-blur-xl">
-            <h2 class="text-base font-semibold text-foreground flex items-center gap-2">
-              <Film className="size-4 text-primary" />
-              镜头与视觉语言解析
-            </h2>
-            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-              本项目聚焦于产品核心工业构造与核心卖点展示，通过纯粹硬核的三维光影解构、材质质感打磨与精准运动节奏，建立高端、前沿的品牌科技感。
-            </p>
-          </div>
+          {(project.bilibiliUrl || project.videoUrl) && (
+            <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card/80 px-4 py-3 text-xs">
+              <span class="flex items-center gap-1.5 text-muted-foreground">
+                <Tv className="size-3.5 text-primary" />
+                备用外部播放线路（若当前网络加载较慢可切换）：
+              </span>
+              <div class="flex flex-wrap items-center gap-2">
+                {project.bilibiliUrl && (
+                  <a
+                    href={project.bilibiliUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-flex items-center gap-1 rounded-md border border-border bg-secondary/70 px-3 py-1.5 font-medium text-foreground hover:bg-secondary transition"
+                  >
+                    Bilibili 观看（国内直连）
+                    <ExternalLink className="size-3 text-muted-foreground" />
+                  </a>
+                )}
+                {project.videoUrl && (
+                  <a
+                    href={project.videoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-flex items-center gap-1 rounded-md border border-border bg-secondary/70 px-3 py-1.5 font-medium text-foreground hover:bg-secondary transition"
+                  >
+                    YouTube 观看（海外）
+                    <ExternalLink className="size-3 text-muted-foreground" />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {project.highlights && project.highlights.length > 0 && (
+            <div class="rounded-xl border border-border/70 bg-card/80 p-6 backdrop-blur-xl">
+              <h2 class="text-base font-semibold text-foreground">项目要点</h2>
+              <ul class="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground list-disc pl-5">
+                {project.highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Sidebar Specifications */}
         <aside class="space-y-6">
-          <div class="rounded-xl border border-border/70 bg-card/70 p-6 backdrop-blur-xl space-y-5">
-            <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              Project Specs / 项目参数
-            </h3>
+          <div class="rounded-xl border border-border/80 bg-card/85 p-6 backdrop-blur-xl space-y-5">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Project Info / 项目信息
+            </h2>
 
             <div class="space-y-4 text-sm divide-y divide-border/60">
               <div class="pt-3 first:pt-0">
@@ -114,7 +158,7 @@ function getProjectImageSrc(p: PortfolioProject) {
                   <Briefcase className="size-3.5" />
                   品牌 / 客户
                 </p>
-                <p class="mt-1 font-medium text-foreground">{project.client || "商业客户"}</p>
+                <p class="mt-1 font-medium text-foreground">{project.client || "商业合作项目"}</p>
               </div>
 
               <div class="pt-3">
@@ -122,24 +166,26 @@ function getProjectImageSrc(p: PortfolioProject) {
                   <Calendar className="size-3.5" />
                   年份
                 </p>
-                <p class="mt-1 font-medium text-foreground">{project.year}</p>
+                <p class="mt-1 font-medium text-foreground">{project.dateLabel || project.year}</p>
               </div>
 
-              <div class="pt-3">
-                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <Monitor className="size-3.5" />
-                  交付规格
-                </p>
-                <p class="mt-1 font-mono text-xs text-foreground/90">{project.deliverables || "1080P 30帧"}</p>
-              </div>
+              {project.deliverables && (
+                <div class="pt-3">
+                  <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Monitor className="size-3.5" />
+                    交付规格
+                  </p>
+                  <p class="mt-1 font-mono text-xs text-foreground/90">{project.deliverables}</p>
+                </div>
+              )}
 
               <div class="pt-3">
                 <p class="text-xs text-muted-foreground flex items-center gap-1.5 mb-1.5">
                   <Layers className="size-3.5" />
-                  软件与技术栈
+                  常用工具链
                 </p>
                 <div class="mt-2 flex flex-wrap gap-1.5">
-                  {(project.tools || ["Cinema 4D", "Octane Render", "After Effects"]).map((tool) => (
+                  {project.tools.map((tool) => (
                     <span class="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground border border-border/60">
                       {tool}
                     </span>
@@ -164,7 +210,7 @@ function getProjectImageSrc(p: PortfolioProject) {
                 href="/contact"
                 class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-90 active:scale-95 transition-all shadow-md"
               >
-                预约档期 / 商务合作
+                预约档期 / 联系合作
               </a>
             </div>
           </div>
@@ -183,7 +229,7 @@ function getProjectImageSrc(p: PortfolioProject) {
           {/* Previous Card */}
           <a
             href={`/projects/${prevProject.slug}`}
-            class="group relative flex items-center gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
+            class="group relative flex items-center gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/80 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
           >
             <div class="relative size-20 shrink-0 overflow-hidden rounded-lg bg-secondary">
               <img
@@ -207,7 +253,7 @@ function getProjectImageSrc(p: PortfolioProject) {
           {/* Next Card */}
           <a
             href={`/projects/${nextProject.slug}`}
-            class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
+            class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-xl border border-border/80 bg-card/80 p-4 transition-all hover:border-foreground/30 hover:bg-card hover:shadow-lg active:scale-[0.99]"
           >
             <div class="min-w-0 flex-1 text-left sm:text-right">
               <span class="flex items-center gap-1 text-[11px] font-medium text-muted-foreground justify-start sm:justify-end group-hover:text-primary transition-colors">

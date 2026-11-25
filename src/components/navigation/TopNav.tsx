@@ -9,7 +9,6 @@ const navItems = [
   { href: "/", label: "首页" },
   { href: "/#work", label: "精选作品" },
   { href: "/archive", label: "全部归档" },
-  { href: "/about", label: "关于我" },
   { href: "/contact", label: "联系合作" },
 ]
 
@@ -61,7 +60,7 @@ export function TopNav() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 print:hidden">
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3">
       <nav className="mx-auto flex h-12 max-w-6xl items-center justify-between rounded-md border border-border/80 bg-background/85 px-3 backdrop-blur-2xl dark:bg-black/65 shadow-sm">
         <a
           href="/"

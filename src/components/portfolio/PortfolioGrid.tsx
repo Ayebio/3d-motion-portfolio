@@ -2,7 +2,7 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUpRight, Play } from "lucide-react"
 
-import type { PortfolioProject } from "@/data/projects"
+import { PROJECT_CATEGORIES, type PortfolioProject } from "@/data/projects"
 
 interface PortfolioGridProps {
   projects: PortfolioProject[]
@@ -14,17 +14,8 @@ function getImageSource(project: PortfolioProject) {
   return typeof image.src === "string" ? image.src : image.src.src
 }
 
-const CATEGORIES = ["全部", "商业 TVC", "机器人 / 硬件", "界面动效", "品牌影像", "AIGC"] as const
-
 export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProps) {
   const [selectedCategory, setSelectedCategory] = React.useState<string>("全部")
-
-  const visibleCategories = React.useMemo(() => {
-    return CATEGORIES.filter((category) => {
-      if (category === "全部") return true
-      return projects.some((p) => p.category === category)
-    })
-  }, [projects])
 
   const filteredProjects = React.useMemo(() => {
     if (selectedCategory === "全部") {
@@ -36,9 +27,9 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
   return (
     <div className="space-y-10">
       {/* Category Tabs Filter */}
-      {showFilter && visibleCategories.length > 2 && (
+      {showFilter && (
         <div className="flex flex-wrap items-center justify-start sm:justify-center gap-2">
-          {visibleCategories.map((category) => {
+          {PROJECT_CATEGORIES.map((category) => {
             const isSelected = selectedCategory === category
             const count =
               category === "全部"
@@ -82,10 +73,27 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
       )}
 
       {/* Projects Grid: 1 column on mobile for legibility, 2 on tablet, 3 on desktop */}
-      <motion.div
-        layout
-        className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3"
-      >
+      {filteredProjects.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-card/60 px-6 py-16 text-center">
+          <p className="text-sm font-medium text-foreground">
+            「{selectedCategory}」分类作品整理中，即将上线
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            后续上传的新作品将自动归入该分类展示。
+          </p>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory("全部")}
+            className="mt-5 inline-flex h-9 items-center rounded-md border border-border bg-secondary/70 px-4 text-xs font-medium text-foreground hover:bg-secondary transition"
+          >
+            查看全部作品
+          </button>
+        </div>
+      ) : (
+        <motion.div
+          layout
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3"
+        >
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project) => {
             return (
@@ -171,7 +179,8 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
             )
           })}
         </AnimatePresence>
-      </motion.div>
+        </motion.div>
+      )}
     </div>
   )
 }

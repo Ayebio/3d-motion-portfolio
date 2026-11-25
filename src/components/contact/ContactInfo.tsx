@@ -1,5 +1,8 @@
 import * as React from "react"
-import { Check, Copy, Mail, MessageSquare, MapPin, Clock, ExternalLink } from "lucide-react"
+import { Check, Copy, Mail, MessageSquare, MapPin, Clock } from "lucide-react"
+
+const WECHAT_ID = "yzy18476923155"
+const EMAIL = "2872594253@qq.com"
 
 export function ContactInfo() {
   const [copiedType, setCopiedType] = React.useState<string | null>(null)
@@ -16,26 +19,58 @@ export function ContactInfo() {
         <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
           Yang Zongye · 三维产品动态设计师
         </p>
-        <h1 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-          让产品在第一时间建立清晰印象。
+        <h1 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl leading-[1.15]">
+          期待新的工作机会，
+          <br />
+          也欢迎商业项目合作。
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-          承接商业 3D 产品 TVC、发布会主视觉、官网首屏视频、硬件结构解构、智能界面动效与 AIGC 视觉创作，欢迎直接沟通项目需求。
+          目前正在寻找三维产品动态设计全职或远程岗位，欢迎 HR 与设计团队随时联系交流、邀约面试；同时也承接商业 3D 产品 TVC、发布会主视觉、官网首屏视频及硬件结构/界面演示项目。
         </p>
       </div>
 
       {/* Direct Contact Cards */}
       <div className="grid gap-3 sm:grid-cols-2">
+        {/* WeChat Card */}
+        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/80 p-4 backdrop-blur-xl transition hover:border-foreground/30">
+          <div className="flex items-center justify-between gap-2">
+            <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+              <MessageSquare className="size-3.5 text-emerald-500" />
+              微信直连
+            </span>
+            <button
+              type="button"
+              onClick={() => copyToClipboard(WECHAT_ID, "wechat")}
+              className="flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-medium text-primary hover:bg-primary/10 transition"
+            >
+              {copiedType === "wechat" ? (
+                <>
+                  <Check className="size-3 text-emerald-500" />
+                  <span className="text-emerald-500">已复制</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="size-3" />
+                  复制微信号
+                </>
+              )}
+            </button>
+          </div>
+          <p className="mt-3 text-sm font-semibold text-foreground font-mono break-all">
+            {WECHAT_ID}
+          </p>
+        </div>
+
         {/* Email Card */}
         <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/80 p-4 backdrop-blur-xl transition hover:border-foreground/30">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
               <Mail className="size-3.5" />
               电子邮箱
             </span>
             <button
               type="button"
-              onClick={() => copyToClipboard("2872594253@qq.com", "email")}
+              onClick={() => copyToClipboard(EMAIL, "email")}
               className="flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-medium text-primary hover:bg-primary/10 transition"
             >
               {copiedType === "email" ? (
@@ -46,47 +81,17 @@ export function ContactInfo() {
               ) : (
                 <>
                   <Copy className="size-3" />
-                  复制
+                  复制邮箱
                 </>
               )}
             </button>
           </div>
           <a
-            href="mailto:2872594253@qq.com"
-            className="mt-3 text-sm font-semibold text-foreground hover:underline"
+            href={`mailto:${EMAIL}`}
+            className="mt-3 text-sm font-semibold text-foreground hover:underline break-all"
           >
-            2872594253@qq.com
+            {EMAIL}
           </a>
-        </div>
-
-        {/* WeChat Card */}
-        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-card/80 p-4 backdrop-blur-xl transition hover:border-foreground/30">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-              <MessageSquare className="size-3.5" />
-              微信沟通
-            </span>
-            <button
-              type="button"
-              onClick={() => copyToClipboard("2872594253", "wechat")}
-              className="flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-medium text-primary hover:bg-primary/10 transition"
-            >
-              {copiedType === "wechat" ? (
-                <>
-                  <Check className="size-3 text-emerald-500" />
-                  <span className="text-emerald-500">已复制微信号</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3" />
-                  复制微信号
-                </>
-              )}
-            </button>
-          </div>
-          <p className="mt-3 text-sm font-semibold text-foreground font-mono">
-            2872594253
-          </p>
         </div>
       </div>
 
@@ -95,34 +100,16 @@ export function ContactInfo() {
         <div className="flex items-start gap-2">
           <MapPin className="size-4 shrink-0 text-primary" />
           <div>
-            <p className="font-medium text-foreground">工作地点</p>
-            <p className="mt-0.5">广州 / 国内外远程协作</p>
+            <p className="font-medium text-foreground">所在城市 / 期望方式</p>
+            <p className="mt-0.5">广州 / 支持远程与异地沟通</p>
           </div>
         </div>
         <div className="flex items-start gap-2">
           <Clock className="size-4 shrink-0 text-primary" />
           <div>
-            <p className="font-medium text-foreground">需求响应</p>
-            <p className="mt-0.5">1-2 个工作日内回复报价与周期</p>
+            <p className="font-medium text-foreground">消息回复</p>
+            <p className="mt-0.5">工作日 24 小时内及时回复</p>
           </div>
-        </div>
-      </div>
-
-      {/* Verified Social Profile */}
-      <div className="border-t border-border/60 pt-6">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground mb-3">
-          Video Channel / 视频主页
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <a
-            href="https://space.bilibili.com/20890448"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/80 px-3.5 py-2 text-xs font-medium text-foreground hover:bg-secondary transition"
-          >
-            Bilibili 个人空间（国内直连）
-            <ExternalLink className="size-3 text-muted-foreground" />
-          </a>
         </div>
       </div>
     </div>

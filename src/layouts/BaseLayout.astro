@@ -12,7 +12,7 @@ interface Props {
 
 const {
   title = "Yang Zongye · 三维产品动态设计师 | 作品集",
-  description = "Yang Zongye（三维产品动态设计师）商业作品集：聚焦 3D 产品动画、工业硬件解构、AIGC 视觉创作、界面动效与品牌影像。",
+  description = "Yang Zongye（三维产品动态设计师）商业作品集：聚焦 3D 产品动画、工业硬件解构、界面动效与品牌视觉影像。",
   image = "/thumbnails/work-01.jpg",
 } = Astro.props
 ---
@@ -61,9 +61,9 @@ const {
     <main class="view-soft min-h-dvh">
       <slot />
     </main>
-    <footer class="border-t border-border/60 px-6 py-12 text-center text-xs text-muted-foreground space-y-2 print:hidden">
+    <footer class="border-t border-border/60 px-6 py-12 text-center text-xs text-muted-foreground space-y-2">
       <p class="font-medium text-foreground">Yang Zongye · 三维产品动态设计师</p>
-      <p>广州 / 远程协作 · Cinema 4D / Octane / Redshift / After Effects / AIGC</p>
+      <p>广州 / 远程协作 · Cinema 4D / Redshift / After Effects / Seedance</p>
       <p class="text-[11px] text-muted-foreground/75">© {new Date().getFullYear()} Yang Zongye. All rights reserved.</p>
     </footer>
   </body>

@@ -1,10 +1,8 @@
 ---
-import fs from "node:fs"
-import path from "node:path"
-import { ArrowRight, Download, FileText } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { FadeIn } from "@/components/motion/FadeIn"
-import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid"
+import { FeaturedShowcaseCarousel } from "@/components/portfolio/FeaturedShowcaseCarousel"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { getPortfolioEntries } from "@/lib/contentful"
 
@@ -13,10 +11,6 @@ const featuredProjects = projects.filter((project) => project.featured)
 const selectedProjects = featuredProjects.length > 0 ? featuredProjects : projects.slice(0, 9)
 const heroImage = selectedProjects[0].images[0]
 const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : heroImage.src.src
-
-const resumeCandidates = ["Yang-Zongye-Resume.pdf", "resume.pdf"]
-const foundPdf = resumeCandidates.find((file) => fs.existsSync(path.join(process.cwd(), "public", file)))
-const resumePdfHref = foundPdf ? `/${foundPdf}` : null
 ---
 
 <BaseLayout title="Yang Zongye · 三维产品动态设计师 | 作品集">
@@ -38,7 +32,7 @@ const resumePdfHref = foundPdf ? `/${foundPdf}` : null
           Yang Zongye
         </h1>
         <p class="mt-6 max-w-2xl text-base leading-7 text-white/80 sm:text-lg">
-          专注商业三维产品动画、硬核结构解构、AIGC 视觉创作与智能硬件界面动态，为科技与硬件品牌建立清晰的第一印象。
+          专注商业三维产品动画、AIGC 动态影像、硬核结构解构与智能硬件视觉，为产品与品牌建立清晰的第一印象。
         </p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
@@ -52,17 +46,16 @@ const resumePdfHref = foundPdf ? `/${foundPdf}` : null
             href="/contact"
             class="inline-flex h-10 items-center rounded-md border border-white/35 bg-white/5 px-5 text-sm font-medium text-white outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]"
           >
-            联系合作
+            联系合作 / 面试邀约
           </a>
         </div>
       </div>
 
-      <div class="mx-auto grid w-full max-w-6xl gap-4 text-white sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mx-auto grid w-full max-w-6xl gap-4 text-white sm:grid-cols-3">
         {[
-          ["商业 TVC 影像", "产品发布片 / 官网主视觉视频 / 品牌宣传片"],
+          ["商业产品 PV", "产品发布片 / 官网主视觉视频 / 品牌宣传片"],
           ["硬核功能解构", "内部结构拆解 / 工业原理可视化 / 机器人演示"],
-          ["界面与质感渲染", "硬件中控交互动效 / 概念静帧 / 材质光影设计"],
-          ["AIGC 概念视觉", "AI 辅助概念探索 / 风格化短片 / 创意视觉试验"],
+          ["AIGC 与质感渲染", "AI 商业镜头 / 动态视觉海报 / 材质光影设计"],
         ].map(([title, body]) => (
           <div class="rounded-xl border border-white/15 bg-black/45 p-5 backdrop-blur-xl sm:p-6">
             <p class="text-sm font-semibold text-white">{title}</p>
@@ -73,75 +66,31 @@ const resumePdfHref = foundPdf ? `/${foundPdf}` : null
     </div>
   </section>
 
-  <section id="work" class="px-6 py-24 sm:py-28">
-    <div class="mx-auto max-w-6xl">
+  <section id="work" class="py-24 sm:py-28">
+    <div class="mx-auto max-w-6xl px-6">
       <FadeIn client:visible>
-        <div class="mb-14 max-w-3xl">
-          <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Selected Works / 精选案例合集</p>
+        <div class="mb-12 max-w-3xl">
+          <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Selected Works / 精选作品</p>
           <h2 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
             解构工业美学，<br />以动态视觉传递产品核心价值。
           </h2>
           <p class="mt-5 text-base leading-7 text-muted-foreground">
-            精选商业 3D 产品动画、智能硬件演示、中控界面动效与品牌影像项目。点击任意卡片即可在线播放成片并查看项目信息。
+            精选商业 3D 产品动画、智能硬件演示与 AIGC 动态视觉代表作。
           </p>
         </div>
       </FadeIn>
-
-      <PortfolioGrid client:load projects={selectedProjects} />
-      <div class="mt-14 flex justify-center">
-        <a
-          href="/archive"
-          class="inline-flex h-10 items-center rounded-md border border-border px-5 text-sm font-medium text-foreground outline-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-[0.98]"
-        >
-          查看全部作品归档 ({projects.length})
-        </a>
-      </div>
     </div>
-  </section>
 
-  <section class="border-t border-border/60 px-6 py-20">
-    <div class="mx-auto max-w-6xl">
-      <div class="grid gap-8 rounded-2xl border border-border/80 bg-card/85 p-6 shadow-soft sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-        <div class="space-y-4">
-          <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
-            About & Resume / 关于我与简历
-          </p>
-          <h2 class="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Yang Zongye · 三维产品动态设计师
-          </h2>
-          <p class="text-sm leading-7 text-muted-foreground sm:text-base">
-            覆盖 Cinema 4D、Octane / Redshift、Houdini、After Effects 与 AIGC 视觉工作流，服务科技硬件、机器人与智能消费品牌，提供从分镜策划、三维动画制作到成片交付的完整执行。
-          </p>
-        </div>
+    <FeaturedShowcaseCarousel client:load projects={selectedProjects} />
 
-        <div class="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row lg:justify-end">
-          <a
-            href="/about"
-            class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background/70 px-5 text-sm font-medium text-foreground hover:bg-secondary transition"
-          >
-            <FileText className="size-4" aria-hidden="true" />
-            查看关于我与履历
-          </a>
-          {resumePdfHref ? (
-            <a
-              href={resumePdfHref}
-              download="Yang-Zongye-Resume.pdf"
-              class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:opacity-90 transition"
-            >
-              <Download className="size-4" aria-hidden="true" />
-              下载简历 (PDF)
-            </a>
-          ) : (
-            <a
-              href="/about#resume"
-              class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:opacity-90 transition"
-            >
-              <Download className="size-4" aria-hidden="true" />
-              获取简历 PDF
-            </a>
-          )}
-        </div>
-      </div>
+    <div class="mt-14 flex justify-center px-6">
+      <a
+        href="/archive"
+        class="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-card/80 px-6 text-sm font-medium text-foreground shadow-sm backdrop-blur-xl outline-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-[0.98]"
+      >
+        查看全部作品归档 ({projects.length})
+        <ArrowRight className="size-4" aria-hidden="true" />
+      </a>
     </div>
   </section>
 </BaseLayout>

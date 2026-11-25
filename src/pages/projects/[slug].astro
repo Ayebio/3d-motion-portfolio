@@ -89,24 +89,55 @@ function getProjectImageSrc(p: PortfolioProject) {
     {/* Video & Specs Section */}
     <section class="px-6 py-12">
       <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_340px]">
-        {/* Main Video Box */}
+        {/* Main Video / Poster Showcase Box */}
         <div class="space-y-4">
-          <VideoPlayer
-            client:load
-            title={project.title}
-            videoSrc={project.videoSrc}
-            posterUrl={heroImageSrc}
-            bilibiliUrl={project.bilibiliUrl}
-            youtubeUrl={project.videoUrl}
-          />
+          {project.videoSrc ? (
+            <VideoPlayer
+              client:load
+              title={project.title}
+              videoSrc={project.videoSrc}
+              posterUrl={heroImageSrc}
+              bilibiliUrl={project.bilibiliUrl}
+              youtubeUrl={project.videoUrl}
+            />
+          ) : (
+            <div class="space-y-4">
+              {project.images.map((img, idx) => {
+                const src = typeof img.src === "string" ? img.src : img.src.src
+                return (
+                  <figure class="overflow-hidden rounded-xl border border-border/80 bg-black shadow-2xl">
+                    <img
+                      src={src}
+                      alt={img.alt}
+                      class="w-full h-auto object-cover"
+                      loading={idx === 0 ? "eager" : "lazy"}
+                    />
+                  </figure>
+                )
+              })}
+            </div>
+          )}
 
-          {(project.bilibiliUrl || project.videoUrl) && (
+          {(project.bilibiliUrl || project.videoUrl || project.xiaohongshuUrl) && (
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card/80 px-4 py-3 text-xs">
               <span class="flex items-center gap-1.5 text-muted-foreground">
                 <Tv className="size-3.5 text-primary" />
-                备用外部播放线路（若当前网络加载较慢可切换）：
+                {project.xiaohongshuUrl && !project.bilibiliUrl && !project.videoUrl
+                  ? "查看小红书发布原帖（支持动态效果与互动评论）："
+                  : "备用外部播放线路（若当前网络加载较慢可切换）："}
               </span>
               <div class="flex flex-wrap items-center gap-2">
+                {project.xiaohongshuUrl && (
+                  <a
+                    href={project.xiaohongshuUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-flex items-center gap-1 rounded-md border border-border bg-secondary/70 px-3 py-1.5 font-medium text-foreground hover:bg-secondary transition"
+                  >
+                    小红书查看原帖
+                    <ExternalLink className="size-3 text-muted-foreground" />
+                  </a>
+                )}
                 {project.bilibiliUrl && (
                   <a
                     href={project.bilibiliUrl}
@@ -210,7 +241,7 @@ function getProjectImageSrc(p: PortfolioProject) {
                 href="/contact"
                 class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-90 active:scale-95 transition-all shadow-md"
               >
-                预约档期 / 联系合作
+                面试联系 / 商务合作
               </a>
             </div>
           </div>

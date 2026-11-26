@@ -10,6 +10,11 @@ interface FeaturedShowcaseCarouselProps {
 
 const AUTOPLAY_MS = 6000
 const APPLE_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const WECHAT_INLINE_ATTRS = {
+  "webkit-playsinline": "true",
+  "x5-playsinline": "true",
+  "x5-video-player-type": "h5-page",
+} as Record<string, string>
 
 function getImageSource(project: PortfolioProject, imageIndex = 0) {
   const image = project.images[imageIndex] || project.images[0]
@@ -31,19 +36,29 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
   const [isHovered, setIsHovered] = React.useState(false)
   const [reducedMotion, setReducedMotion] = React.useState(false)
   const [stageWidth, setStageWidth] = React.useState(1200)
-  const [playingSlug, setPlayingSlug] = React.useState<string | null>(null)
+  const [playingSlideKey, setPlayingSlideKey] = React.useState<string | null>(null)
   const [posterGalleryProject, setPosterGalleryProject] = React.useState<PortfolioProject | null>(null)
   const [posterIndex, setPosterIndex] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
   const [dragOffset, setDragOffset] = React.useState(0)
 
   const stageRef = React.useRef<HTMLDivElement>(null)
+  const videoRefs = React.useRef<Record<string, HTMLVideoElement | null>>({})
   const dragStartX = React.useRef<number | null>(null)
   const isDraggingRef = React.useRef(false)
   const elapsedRef = React.useRef(0)
 
   const activeIndex = total > 0 ? ((virtualIndex % total) + total) % total : 0
-  const isInlineMediaActive = Boolean(playingSlug || posterGalleryProject)
+  const isInlineMediaActive = Boolean(playingSlideKey || posterGalleryProject)
+
+  const stopAllInlineVideos = React.useCallback(() => {
+    Object.values(videoRefs.current).forEach((video) => {
+      if (video && !video.paused) {
+        video.pause()
+      }
+    })
+    setPlayingSlideKey(null)
+  }, [])
 
   React.useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -85,7 +100,7 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
   const stepBy = React.useCallback(
     (delta: number) => {
       if (total <= 1 || delta === 0) return
-      setPlayingSlug(null)
+      stopAllInlineVideos()
       setPosterGalleryProject(null)
       elapsedRef.current = 0
       setProgress(0)
@@ -93,13 +108,12 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
       setVirtualIndex((prev) => {
         const next = prev + delta
         if (next < 1 || next > 3 * total - 2) {
-          const normalized = total + (((next % total) + total) % total)
-          return normalized
+          return total + (((next % total) + total) % total)
         }
         return next
       })
     },
-    [total]
+    [total, stopAllInlineVideos]
   )
 
   const goNext = React.useCallback(() => stepBy(1), [stepBy])
@@ -159,13 +173,13 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
     if (!isInlineMediaActive) return
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setPlayingSlug(null)
+        stopAllInlineVideos()
         setPosterGalleryProject(null)
       }
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [isInlineMediaActive])
+  }, [isInlineMediaActive, stopAllInlineVideos])
 
   if (total === 0) {
     return null
@@ -182,7 +196,7 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
   const navEdgeOffset = Math.max(16, Math.round(sideMargin - 68))
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (playingSlug) return
+    if (playingSlideKey) return
     if ((event.target as HTMLElement).closest("a, button, video")) return
     dragStartX.current = event.clientX
     isDraggingRef.current = false
@@ -224,22 +238,33 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
     }
   }
 
-  const handleActivateMedia = (project: PortfolioProject) => {
+  // Call video.play() SYNCHRONOUSLY inside click handler so iOS Safari & WeChat start playback on the very first tap
+  const handleActivateMedia = (project: PortfolioProject, slideKey: string) => {
     if (isDraggingRef.current) return
     if (project.videoSrc) {
-      setPlayingSlug(project.slug)
+      setPlayingSlideKey(slideKey)
+      const videoEl = videoRefs.current[slideKey]
+      if (videoEl) {
+        videoEl.muted = false
+        const playPromise = videoEl.play()
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Fallback for strict WebViews that disallow unmuted playback
+            videoEl.muted = true
+            videoEl.play().catch(() => {})
+          })
+        }
+      }
     } else {
       setPosterIndex(0)
       setPosterGalleryProject(project)
     }
   }
 
-  const activeProject = projects[activeIndex]
-
   return (
     <>
       <div
-        className="space-y-5 sm:space-y-7"
+        className="space-y-4 sm:space-y-7"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
           setIsHovered(false)
@@ -251,27 +276,6 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
         aria-roledescription="carousel"
         aria-label="精选作品轮播"
       >
-        {/* Minimal Editorial Counter Row (strictly single-line on mobile) */}
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 sm:px-6">
-          <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
-            <span className="shrink-0 whitespace-nowrap font-mono text-xs font-medium tracking-wider text-muted-foreground tabular-nums">
-              {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <span className="h-px w-5 shrink-0 bg-border sm:w-8" aria-hidden="true" />
-            <span className="min-w-0 truncate text-xs font-medium text-foreground/90">
-              {activeProject.title}
-            </span>
-          </div>
-
-          <a
-            href={`/projects/${activeProject.slug}`}
-            className="inline-flex shrink-0 whitespace-nowrap items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            查看项目详情
-            <ArrowUpRight className="size-3.5" />
-          </a>
-        </div>
-
         {/* Full-bleed Apple Cinema Stage */}
         <div
           ref={stageRef}
@@ -279,9 +283,9 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
           onPointerMove={handlePointerMove}
           onPointerUp={(e) => finishDrag(e.clientX)}
           onPointerCancel={() => finishDrag()}
-          className="relative w-full overflow-hidden py-2 sm:py-3 select-none"
+          className="relative w-full overflow-hidden py-1 sm:py-3 select-none"
         >
-          {/* Desktop Left / Right Flanking Buttons (hidden on mobile so nothing overlaps 16:9 media or text) */}
+          {/* Desktop Left / Right Flanking Buttons */}
           <button
             type="button"
             onClick={goPrev}
@@ -316,13 +320,14 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
             onAnimationComplete={handleTrackAnimationComplete}
           >
             {loopedProjects.map((project, index) => {
+              const slideKey = `${Math.floor(index / total)}-${project.slug}`
               const isActive = index === virtualIndex
               const distance = Math.abs(index - virtualIndex)
-              const isThisPlaying = isActive && playingSlug === project.slug && Boolean(project.videoSrc)
+              const isThisPlaying = isActive && playingSlideKey === slideKey && Boolean(project.videoSrc)
 
               return (
                 <motion.article
-                  key={`${Math.floor(index / total)}-${project.slug}`}
+                  key={slideKey}
                   style={{ width: `${slideWidth}px` }}
                   animate={{
                     scale: isActive ? 1 : isCompact ? 0.95 : 0.925,
@@ -332,7 +337,7 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
                   className="relative shrink-0"
                 >
                   {isCompact ? (
-                    /* MOBILE-ONLY SPLIT CARD: Clean unobstructed 16:9 video/cover on top + legible info card below */
+                    /* MOBILE-ONLY SPLIT CARD: Pre-mounted <video> enables single-tap playback on iOS & WeChat */
                     <div
                       className={`group relative overflow-hidden rounded-[20px] border bg-card transition-shadow duration-500 ${
                         isActive
@@ -340,78 +345,89 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
                           : "border-border/40 shadow-none"
                       }`}
                     >
-                      {isThisPlaying ? (
-                        <div className="relative aspect-[16/9] w-full bg-black">
+                      <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-950">
+                        {isActive && project.videoSrc && (
                           <video
+                            ref={(el) => {
+                              videoRefs.current[slideKey] = el
+                            }}
                             src={project.videoSrc}
                             poster={getImageSource(project)}
-                            controls
-                            autoPlay
+                            preload="none"
                             playsInline
-                            className="h-full w-full bg-black object-contain"
+                            controls={isThisPlaying}
+                            {...WECHAT_INLINE_ATTRS}
+                            className={
+                              isThisPlaying
+                                ? "relative z-10 h-full w-full bg-black object-contain"
+                                : "pointer-events-none absolute inset-0 h-full w-full opacity-0"
+                            }
                           >
                             您的浏览器不支持 HTML5 视频播放。
                           </video>
+                        )}
+
+                        {isThisPlaying ? (
                           <button
                             type="button"
-                            onClick={() => setPlayingSlug(null)}
+                            onClick={stopAllInlineVideos}
                             aria-label="退出播放"
                             className="absolute right-2.5 top-2.5 z-20 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/75 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md active:scale-95"
                           >
                             <X className="size-3" />
                             退出
                           </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => (isActive ? handleActivateMedia(project) : stepBy(index - virtualIndex))}
-                          aria-label={
-                            isActive
-                              ? project.videoSrc
-                                ? `原地播放 ${project.title}`
-                                : `查看大图 ${project.title}`
-                              : `切换到 ${project.title}`
-                          }
-                          className="relative block aspect-[16/9] w-full overflow-hidden bg-neutral-950 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                          <img
-                            src={getImageSource(project)}
-                            alt={project.images[0].alt}
-                            draggable={false}
-                            className="h-full w-full object-cover"
-                            loading={distance <= 1 ? "eager" : "lazy"}
-                            decoding="async"
-                          />
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/25" />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              isActive ? handleActivateMedia(project, slideKey) : stepBy(index - virtualIndex)
+                            }
+                            aria-label={
+                              isActive
+                                ? project.videoSrc
+                                  ? `原地播放 ${project.title}`
+                                  : `查看大图 ${project.title}`
+                                : `切换到 ${project.title}`
+                            }
+                            className="relative block h-full w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            <img
+                              src={getImageSource(project)}
+                              alt={project.images[0].alt}
+                              draggable={false}
+                              className="h-full w-full object-cover"
+                              loading={distance <= 1 ? "eager" : "lazy"}
+                              decoding="async"
+                            />
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/25" />
 
-                          {/* Compact top metadata pills only — zero bottom overlay clutter */}
-                          <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
-                            <span className="rounded-full border border-white/20 bg-black/55 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
-                              {project.category}
-                            </span>
-                            <span className="rounded-full border border-white/15 bg-black/55 px-2.5 py-0.5 font-mono text-[10px] text-white/90 backdrop-blur-md">
-                              {project.dateLabel || project.year}
-                            </span>
-                          </div>
-
-                          {/* Centered unobstructed Play/Expand button */}
-                          {isActive && (
-                            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                              <span className="flex size-12 items-center justify-center rounded-full border border-white/30 bg-white/92 text-black shadow-xl backdrop-blur-md">
-                                {project.videoSrc ? (
-                                  <Play className="ml-0.5 size-5 fill-black" aria-hidden="true" />
-                                ) : (
-                                  <Expand className="size-4" aria-hidden="true" />
-                                )}
+                            <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+                              <span className="rounded-full border border-white/20 bg-black/55 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
+                                {project.category}
+                              </span>
+                              <span className="rounded-full border border-white/15 bg-black/55 px-2.5 py-0.5 font-mono text-[10px] text-white/90 backdrop-blur-md">
+                                {project.dateLabel || project.year}
                               </span>
                             </div>
-                          )}
-                        </button>
-                      )}
 
-                      {/* Dedicated mobile footer info area — zero overlap with image or play button */}
-                      <div className="p-4">
+                            {isActive && (
+                              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                                <span className="flex size-12 items-center justify-center rounded-full border border-white/30 bg-white/92 text-black shadow-xl backdrop-blur-md">
+                                  {project.videoSrc ? (
+                                    <Play className="ml-0.5 size-5 fill-black" aria-hidden="true" />
+                                  ) : (
+                                    <Expand className="size-4" aria-hidden="true" />
+                                  )}
+                                </span>
+                              </div>
+                            )}
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Mobile info area */}
+                      <div className="p-3.5">
                         <p className="truncate text-[11px] font-medium text-muted-foreground">
                           {project.client || "商业合作项目"}
                           {project.deliverables ? ` · ${project.deliverables}` : ""}
@@ -419,11 +435,11 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
                         <h3 className="mt-1 truncate text-base font-semibold tracking-tight text-foreground">
                           {project.title}
                         </h3>
-                        <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                           {project.description}
                         </p>
 
-                        <div className="mt-3.5 flex items-center justify-between border-t border-border/60 pt-3">
+                        <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2.5">
                           <span className="text-xs font-medium text-muted-foreground">
                             {project.role}
                           </span>
@@ -438,7 +454,7 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
                       </div>
                     </div>
                   ) : (
-                    /* DESKTOP APPLE CINEMA CARD — untouched */
+                    /* DESKTOP APPLE CINEMA CARD — pre-mounted <video> for instant single-click playback */
                     <div
                       className={`group relative overflow-hidden rounded-[24px] border bg-neutral-950 transition-shadow duration-700 ${
                         isActive
@@ -446,126 +462,137 @@ export function FeaturedShowcaseCarousel({ projects }: FeaturedShowcaseCarouselP
                           : "border-border/40 shadow-none"
                       }`}
                     >
-                      {isThisPlaying ? (
-                        <div className="relative aspect-[16/9] w-full bg-black">
+                      <div className="relative aspect-[16/9] w-full bg-black">
+                        {isActive && project.videoSrc && (
                           <video
+                            ref={(el) => {
+                              videoRefs.current[slideKey] = el
+                            }}
                             src={project.videoSrc}
                             poster={getImageSource(project)}
-                            controls
-                            autoPlay
+                            preload="none"
                             playsInline
-                            className="h-full w-full bg-black object-contain"
+                            controls={isThisPlaying}
+                            {...WECHAT_INLINE_ATTRS}
+                            className={
+                              isThisPlaying
+                                ? "relative z-10 h-full w-full bg-black object-contain"
+                                : "pointer-events-none absolute inset-0 h-full w-full opacity-0"
+                            }
                           >
                             您的浏览器不支持 HTML5 视频播放。
                           </video>
+                        )}
+
+                        {isThisPlaying ? (
                           <button
                             type="button"
-                            onClick={() => setPlayingSlug(null)}
+                            onClick={stopAllInlineVideos}
                             aria-label="退出播放"
                             className="absolute right-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-black/90 active:scale-95"
                           >
                             <X className="size-3.5" />
                             退出播放
                           </button>
-                        </div>
-                      ) : isActive ? (
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          onClick={() => handleActivateMedia(project)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault()
-                              handleActivateMedia(project)
-                            }
-                          }}
-                          aria-label={project.videoSrc ? `原地播放 ${project.title}` : `查看大图 ${project.title}`}
-                          className="relative block aspect-[16/9] w-full cursor-pointer overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                        >
-                          <img
-                            src={getImageSource(project)}
-                            alt={project.images[0].alt}
-                            draggable={false}
-                            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
-                            loading={distance <= 1 ? "eager" : "lazy"}
-                            decoding="async"
-                          />
+                        ) : isActive ? (
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => handleActivateMedia(project, slideKey)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                handleActivateMedia(project, slideKey)
+                              }
+                            }}
+                            aria-label={project.videoSrc ? `原地播放 ${project.title}` : `查看大图 ${project.title}`}
+                            className="relative block h-full w-full cursor-pointer overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                          >
+                            <img
+                              src={getImageSource(project)}
+                              alt={project.images[0].alt}
+                              draggable={false}
+                              className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+                              loading={distance <= 1 ? "eager" : "lazy"}
+                              decoding="async"
+                            />
 
-                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.04)_36%,rgba(0,0,0,0.72)_76%,rgba(0,0,0,0.92)_100%)]" />
+                            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.04)_36%,rgba(0,0,0,0.72)_76%,rgba(0,0,0,0.92)_100%)]" />
 
-                          <div className="absolute inset-x-6 top-6 flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full border border-white/20 bg-black/55 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
-                                {project.role}
-                              </span>
-                              <span className="rounded-full border border-white/15 bg-white/12 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md">
-                                {project.category}
+                            <div className="absolute inset-x-6 top-6 flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className="rounded-full border border-white/20 bg-black/55 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
+                                  {project.role}
+                                </span>
+                                <span className="rounded-full border border-white/15 bg-white/12 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md">
+                                  {project.category}
+                                </span>
+                              </div>
+                              <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1 font-mono text-[11px] text-white/85 backdrop-blur-md">
+                                {project.dateLabel || project.year}
                               </span>
                             </div>
-                            <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1 font-mono text-[11px] text-white/85 backdrop-blur-md">
-                              {project.dateLabel || project.year}
-                            </span>
-                          </div>
 
-                          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                            <span className="flex size-16 items-center justify-center rounded-full border border-white/30 bg-white/90 text-black shadow-2xl backdrop-blur-md transition duration-500 ease-out group-hover:scale-110">
-                              {project.videoSrc ? (
-                                <Play className="ml-0.5 size-6 fill-black" aria-hidden="true" />
-                              ) : (
-                                <Expand className="size-5" aria-hidden="true" />
-                              )}
-                            </span>
-                          </div>
+                            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                              <span className="flex size-16 items-center justify-center rounded-full border border-white/30 bg-white/90 text-black shadow-2xl backdrop-blur-md transition duration-500 ease-out group-hover:scale-110">
+                                {project.videoSrc ? (
+                                  <Play className="ml-0.5 size-6 fill-black" aria-hidden="true" />
+                                ) : (
+                                  <Expand className="size-5" aria-hidden="true" />
+                                )}
+                              </span>
+                            </div>
 
-                          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-8">
-                            <div className="max-w-xl">
-                              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/70">
-                                {project.client || "商业合作项目"}
-                                {project.deliverables ? ` · ${project.deliverables}` : ""}
-                              </p>
-                              <h3 className="mt-1.5 text-3xl font-semibold tracking-tight text-white">
+                            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-8">
+                              <div className="max-w-xl">
+                                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/70">
+                                  {project.client || "商业合作项目"}
+                                  {project.deliverables ? ` · ${project.deliverables}` : ""}
+                                </p>
+                                <h3 className="mt-1.5 text-3xl font-semibold tracking-tight text-white">
+                                  {project.title}
+                                </h3>
+                                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-white/75">
+                                  {project.description}
+                                </p>
+                              </div>
+
+                              <div className="flex shrink-0 items-center">
+                                <a
+                                  href={`/projects/${project.slug}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/50 px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/20"
+                                >
+                                  查看详情
+                                  <ArrowUpRight className="size-3.5" />
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => stepBy(index - virtualIndex)}
+                            aria-label={`切换到 ${project.title}`}
+                            className="relative block h-full w-full cursor-pointer overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            <img
+                              src={getImageSource(project)}
+                              alt={project.images[0].alt}
+                              draggable={false}
+                              className="h-full w-full object-cover"
+                              loading={distance <= 2 ? "eager" : "lazy"}
+                              decoding="async"
+                            />
+                            <div className="pointer-events-none absolute inset-0 bg-black/35 transition duration-500 hover:bg-black/20" />
+                            <div className="absolute inset-x-5 bottom-5">
+                              <p className="truncate text-lg font-semibold text-white/90">
                                 {project.title}
-                              </h3>
-                              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-white/75">
-                                {project.description}
                               </p>
                             </div>
-
-                            <div className="flex shrink-0 items-center">
-                              <a
-                                href={`/projects/${project.slug}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/50 px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/20"
-                              >
-                                查看详情
-                                <ArrowUpRight className="size-3.5" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => stepBy(index - virtualIndex)}
-                          aria-label={`切换到 ${project.title}`}
-                          className="relative block aspect-[16/9] w-full cursor-pointer overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                          <img
-                            src={getImageSource(project)}
-                            alt={project.images[0].alt}
-                            draggable={false}
-                            className="h-full w-full object-cover"
-                            loading={distance <= 2 ? "eager" : "lazy"}
-                            decoding="async"
-                          />
-                          <div className="pointer-events-none absolute inset-0 bg-black/35 transition duration-500 hover:bg-black/20" />
-                          <div className="absolute inset-x-5 bottom-5">
-                            <p className="truncate text-lg font-semibold text-white/90">
-                              {project.title}
-                            </p>
-                          </div>
-                        </button>
-                      )}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </motion.article>

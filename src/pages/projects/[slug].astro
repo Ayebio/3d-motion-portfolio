@@ -1,13 +1,12 @@
 ---
-import { ArrowLeft, ArrowRight, ExternalLink, Layers, Monitor, Calendar, Briefcase, Tv } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Calendar, Briefcase, Tv, UserCheck } from "lucide-react"
 
 import { VideoPlayer } from "@/components/video/VideoPlayer"
 import BaseLayout from "@/layouts/BaseLayout.astro"
-import { getPortfolioEntries } from "@/lib/contentful"
-import type { PortfolioProject } from "@/data/projects"
+import { getPortfolioEntries, type PortfolioProject } from "@/data/projects"
 
-export async function getStaticPaths() {
-  const projects = await getPortfolioEntries()
+export function getStaticPaths() {
+  const projects = getPortfolioEntries()
 
   return projects.map((project, index) => {
     const prevProject = index > 0 ? projects[index - 1] : projects[projects.length - 1]
@@ -194,6 +193,16 @@ function getProjectImageSrc(p: PortfolioProject) {
 
               <div class="pt-3">
                 <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <UserCheck className="size-3.5" />
+                  个人职责
+                </p>
+                <p class="mt-1 text-xs leading-relaxed font-medium text-foreground">
+                  {project.responsibilities}
+                </p>
+              </div>
+
+              <div class="pt-3">
+                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
                   <Calendar className="size-3.5" />
                   年份
                 </p>
@@ -209,20 +218,6 @@ function getProjectImageSrc(p: PortfolioProject) {
                   <p class="mt-1 font-mono text-xs text-foreground/90">{project.deliverables}</p>
                 </div>
               )}
-
-              <div class="pt-3">
-                <p class="text-xs text-muted-foreground flex items-center gap-1.5 mb-1.5">
-                  <Layers className="size-3.5" />
-                  常用工具链
-                </p>
-                <div class="mt-2 flex flex-wrap gap-1.5">
-                  {project.tools.map((tool) => (
-                    <span class="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground border border-border/60">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
 
               <div class="pt-3">
                 <p class="text-xs text-muted-foreground mb-2">项目标签</p>

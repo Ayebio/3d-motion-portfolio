@@ -1,5 +1,4 @@
 import * as React from "react"
-import { motion } from "framer-motion"
 import { Check, Copy, X, ZoomIn } from "lucide-react"
 
 interface QrItem {
@@ -148,12 +147,7 @@ export function ContactQrCards() {
 
   return (
     <>
-      <motion.div
-        className="surface-light rounded-2xl p-3.5 sm:p-7"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="surface-light rounded-2xl p-4 sm:p-7">
         <div className="mb-4 sm:mb-6">
           <p className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
             Scan to Connect / 扫码添加好友
@@ -162,16 +156,16 @@ export function ContactQrCards() {
             微信与小红书二维码
           </h2>
           <p className="mt-1 sm:mt-1.5 text-xs leading-relaxed text-muted-foreground">
-            点击任意二维码可放大扫描，也可直接复制账号添加。
+            点击任意二维码可放大扫描（微信内支持长按识别），也可直接复制账号添加。
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {QR_ITEMS.map((item) => (
             <QrCard key={item.id} item={item} onZoom={setZoomed} />
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Lightbox modal for enlarged QR scanning */}
       {zoomed && (

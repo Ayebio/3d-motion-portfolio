@@ -1,4 +1,4 @@
-export const PROJECT_CATEGORIES = ["全部", "泳池热泵", "水下机器人", "庭院割草机", "AIGC", "其他"] as const
+export const PROJECT_CATEGORIES = ["全部", "泳池热泵", "暖通热泵", "水下机器人", "割草机器人", "中控与品牌", "AIGC", "其他设备"] as const
 
 export interface PortfolioImage {
   src: ImageMetadata | string
@@ -11,6 +11,7 @@ export interface PortfolioProject {
   title: string
   slug: string
   role: string
+  responsibilities: string
   category: string
   featured?: boolean
   dateLabel?: string
@@ -35,6 +36,7 @@ interface PortfolioVideo {
   year: string
   featured?: boolean
   role?: string
+  responsibilities?: string
   category?: string
   client?: string
   tools?: string[]
@@ -57,7 +59,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "Jumbo 热泵",
     year: "2023",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 31s",
+    deliverables: "1920×1080 · 30fps · 31s",
     description: "Fairland Jumbo 商用大功率泳池热泵三维产品片，通过雪地耐候场景、双系统芯片解构与静音风扇暗调特写，呈现全天候稳定制热能力。",
     highlights: [
       "极端环境表现：冰雪泳池场景直观呈现 -20°C 至 43°C 宽温域运行能力",
@@ -74,7 +76,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "230703_InverEco水泵",
     displayTitle: "InverEco 水泵",
     year: "2023",
-    deliverables: "1920×1080 · 24fps · 33s",
+    deliverables: "1920×1080 · 30fps · 33s",
     description: "InverEco 变频泳池水泵三维发布片，围绕天井水景空间开场、功耗数显面板、IE4 直流无刷电机拆解与 36dBA 静音家居场景展开。",
     highlights: [
       "空间视觉开场：圆形天井水池与巨幅 INVERTER 立体字景深构图，建立极简工业调性",
@@ -91,7 +93,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "230726_Prefect热泵",
     displayTitle: "Prefect 热泵",
     year: "2023",
-    deliverables: "1920×1080 · 24fps · 46s",
+    deliverables: "1920×1080 · 30fps · 46s",
     description: "荣获 2023 iF 设计奖的 Prefect 泳池热泵产品片，以航空涡轮灵感切入，展示菱形触控界面与无机械噪音风道结构。",
     highlights: [
       "航空涡轮灵感：暗场聚光揭示 INVERPAD TURBO 涡轮扇叶，传递空气动力学美学",
@@ -108,7 +110,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "230817_一体机热泵",
     displayTitle: "一体机热泵",
     year: "2023",
-    deliverables: "1920×1080 · 24fps · 43s",
+    deliverables: "1920×1080 · 30fps · 43s",
     description: "集加热与循环水泵于一体的泳池热泵三维影片，以日食意象开篇，通过半透明机箱透视完整拆解内部水循环系统。",
     highlights: [
       "概念光影开场：暗夜日食光环与地平线暖光渲染，营造静谧克制的视觉基调",
@@ -126,7 +128,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "X-Warrior 水下机器人",
     year: "2023",
     featured: true,
-    deliverables: "1920×1080 · 24fps · 62s",
+    deliverables: "1920×1080 · 30fps · 62s",
     description: "X-Warrior 无线泳池清洁机器人商业三维影片，结合红光赛博隧道阵列登场、高速疾驰动态与真实水下焦散巡航清洁镜头。",
     highlights: [
       "超跑级阵列亮相：红光网格隧道中三机编队登场，配合发光灯带强化硬核机械辨识度",
@@ -143,7 +145,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "230922_X20热泵",
     displayTitle: "X20 热泵",
     year: "2023",
-    deliverables: "1920×1080 · 24fps · 35s",
+    deliverables: "1920×1080 · 30fps · 35s",
     description: "X20 绯红配色蜂窝格栅泳池热泵产品片，以冷暖双色气流光轨可视化 COP20 高能效特性，兼具力量感与建筑美学。",
     highlights: [
       "标志性配色与材质：暗场光影勾勒绯红蜂窝冲孔机身与高亮数显屏，对比度强烈",
@@ -158,10 +160,10 @@ const portfolioVideos: PortfolioVideo[] = [
   {
     id: "0PpaLPon3PU",
     rawTitle: "231009_Aquark Igarden",
-    displayTitle: "Aquark Igarden",
+    displayTitle: "Aquark iGarden",
     year: "2023",
     client: "Aquark",
-    deliverables: "1920×1080 · 24fps · 22s",
+    deliverables: "1920×1080 · 30fps · 22s",
     description: "Aquark iGarden 智慧庭院生态短片，串联草坪 AR 扫描网格、MR.PURE 水质监测仪与墙面中控屏，呈现一体化庭院智控场景。",
     highlights: [
       "AR 庭院测绘视觉：现代白墙别墅草坪叠加发光网格扫描，引出割草机智能作业路径",
@@ -176,10 +178,10 @@ const portfolioVideos: PortfolioVideo[] = [
   {
     id: "irNQLLKmoCo",
     rawTitle: "231027_Aquark Igarden-02",
-    displayTitle: "Aquark Igarden 02",
+    displayTitle: "Aquark iGarden 02",
     year: "2023",
     client: "Aquark",
-    deliverables: "1920×1080 · 24fps · 25s",
+    deliverables: "1920×1080 · 30fps · 25s",
     description: "Mr. iGarden 智慧庭院全景演示片，结合墙面黑晶中控、草坪 AR 天气与水深数据浮窗及机房剖面透视，展示全院设备互联。",
     highlights: [
       "中控面板质感：高反光玻璃屏与建筑墙面光影结合，呈现 All in One All in Hand 操控体验",
@@ -197,7 +199,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯水下机器人 01",
     year: "2023",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 37s",
+    deliverables: "1920×1080 · 30fps · 37s",
     description: "创下 40 小时最长续航吉尼斯世界纪录的无线水下机器人发布片，以半透明 X 光电池透视与泳池水下剖面展现旗舰实力。",
     highlights: [
       "吉尼斯纪录舞台感：官方 Record Holder 徽章与 40 HOURS 核心数字配合蓝红双色灯柱亮相",
@@ -215,7 +217,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "Aquark 中控系统",
     year: "2023",
     client: "Aquark",
-    deliverables: "1920×1080 · 24fps · 37s",
+    deliverables: "1920×1080 · 30fps · 37s",
     description: "Mr. iGarden 庭院智能中控屏三维产品与交互动效片，聚焦倒角金属工艺、实时水质能耗触控界面及分层式 OTA 升级动画。",
     highlights: [
       "极简工业工艺特写：暗调轮廓光勾勒阳极氧化倒角边框与玻璃面板细节",
@@ -233,7 +235,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯水下机器人 02",
     year: "2024",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 15s",
+    deliverables: "1920×1080 · 30fps · 15s",
     description: "Fairland 吉尼斯 40 小时水下机器人精炼预告短片，运用布料揭幕模拟与精密金属齿轮组拆解，15 秒内浓缩硬核机械张力。",
     highlights: [
       "布料揭幕流体模拟：暗黑丝绸随风掠过机身，缓缓显露玫瑰金外壳与红色灯带",
@@ -251,7 +253,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯热泵 01",
     year: "2024",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 34s",
+    deliverables: "1920×1080 · 30fps · 34s",
     description: "挑战最高能效 COP 39 吉尼斯世界纪录的泳池热泵概念片，以暗调琥珀光效热核与高速热流穿越镜头点燃视觉悬念。",
     highlights: [
       "悬念氛围营造：暗黑空间中「READY FOR A COP MIRACLE?」引出玻璃腔体内炽热发光核心",
@@ -269,7 +271,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯热泵 02",
     year: "2024",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 40s",
+    deliverables: "1920×1080 · 30fps · 40s",
     description: "29.69 dB(A) 超静音吉尼斯纪录泳池热泵三维影片，结合消声室背景与金色 INVERPAD TURBO 涡轮爆炸拆解凸显静音科技。",
     highlights: [
       "声波材质抽象开篇：暗黑丝滑金属波纹隐喻极静气流，奠定高级声学美学基调",
@@ -287,7 +289,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯割草机器人 01",
     year: "2024",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 37s",
+    deliverables: "1920×1080 · 30fps · 37s",
     description: "超跑造型割草机器人三维发布片，通过金色空气动力学光轨、机身工艺细节与极光夜色草坪镜头，诠释 10+ 小时超长续航。",
     highlights: [
       "超跑风洞光轨表现：金色能量粒子沿流线车身勾勒轮廓，突出 Supercar Design 设计语言",
@@ -302,10 +304,10 @@ const portfolioVideos: PortfolioVideo[] = [
   {
     id: "iZniQWRyigA",
     rawTitle: "240430 Fairland Igarden-01",
-    displayTitle: "Fairland Igarden 01",
+    displayTitle: "Fairland iGarden 01",
     year: "2024",
     client: "Fairland",
-    deliverables: "1920×960 · 24fps · 61s",
+    deliverables: "1920×960 · 30fps · 61s",
     description: "2:1 宽银幕比例的 Fairland iGarden 生态宣传片，以发光蓝能光流穿越建筑门廊开场，串联泳池清洁、热交换核心与户用储能系统。",
     highlights: [
       "电影宽画幅叙事：蓝色发光能量流穿过暗调建筑之门进入庭院，打开智慧户外生活篇章",
@@ -320,10 +322,10 @@ const portfolioVideos: PortfolioVideo[] = [
   {
     id: "NrYIxH9fVyw",
     rawTitle: "240513_超跑Igarden",
-    displayTitle: "超跑 Igarden",
+    displayTitle: "超跑 iGarden",
     year: "2024",
     client: "Fairland / iGarden",
-    deliverables: "1920×1080 · 24fps · 82s",
+    deliverables: "1920×1080 · 30fps · 82s",
     description: "以超跑动力隐喻串联 iGarden 全系产品的概念大片，将 30 小时续航割草机、内燃机活塞炽焰与智能水质中控融于暗黑电影质感。",
     highlights: [
       "超跑棚拍与雾效疾驰：暗场轮廓光雕琢鲜红流线机身，配合烟雾地面疾驰强化 30 小时续航",
@@ -340,7 +342,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "240527_InverX水下机器人",
     displayTitle: "InverX 水下机器人",
     year: "2024",
-    deliverables: "1920×1080 · 24fps · 51s",
+    deliverables: "1920×1080 · 30fps · 51s",
     description: "InverX 无线泳池机器人三维产品片，通过粗野主义空间 X 标识开场、蓝光电池阵列、池底强劲吸污与爬壁水纹镜头展示核心性能。",
     highlights: [
       "标志性空间亮相：暗黑水泥建筑大厅上方悬置发光橙色 X 徽标，凸显银黑机身硬朗气质",
@@ -358,7 +360,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "品牌企业宣传片",
     year: "2024",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 112s",
+    deliverables: "1920×1080 · 30fps · 112s",
     description: "Fairland 品牌企业宣传片，将虚拟科技展厅「科技联盟乌托邦」、自动化智造产线、实验室声学检测与人文温度画面有机结合。",
     highlights: [
       "虚拟科技展厅构建：大尺度极简白调未来空间「INNOVATION UTOPIA」集中陈列旗舰产品线",
@@ -376,7 +378,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "吉尼斯割草机器人 02",
     year: "2024",
     client: "Fairland / 吉尼斯项目",
-    deliverables: "1920×1080 · 24fps · 65s",
+    deliverables: "1920×1080 · 30fps · 65s",
     description: "吉尼斯割草机器人与庭院产品联袂演示片，融合俯拍高速隧道尾灯轨迹、水下机器人爬壁与现代草坪热泵庭院全景。",
     highlights: [
       "俯拍高速动感转场：顶视角水泥通道中红色超跑割草机拖出绯红尾灯光轨，速度张力十足",
@@ -395,7 +397,7 @@ const portfolioVideos: PortfolioVideo[] = [
     year: "2024",
     featured: true,
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 30s",
+    deliverables: "1920×1080 · 30fps · 30s",
     description: "Fairland 智慧庭院中控系统视觉短片，以暗调岩石光影揭示 OLED 交互屏，再通过日夜光影流转展现全庭院设备联动。",
     highlights: [
       "雕塑光影开场：岩石肌理与高对比明暗缝隙中浮现超薄黑晶屏幕，强化高端科技质感",
@@ -412,7 +414,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "240918_BIO盐机",
     displayTitle: "BIO 盐机",
     year: "2024",
-    deliverables: "1920×1080 · 24fps · 40s",
+    deliverables: "1920×1080 · 30fps · 40s",
     description: "BIO 泳池盐氯机三维商业片，运用灵动水花流体包裹机身、蔚蓝水冠涟漪特写与 BIO/Party/Soft 多模式 UI 演绎亲肤净水体验。",
     highlights: [
       "流体水花包裹特效：金属银白机身在动态飞溅水流与蓝调水冠波纹中亮相，呼应净水属性",
@@ -429,7 +431,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "241118_N机热泵",
     displayTitle: "N机热泵",
     year: "2024",
-    deliverables: "1920×1080 · 24fps · 29s",
+    deliverables: "1920×1080 · 30fps · 29s",
     description: "N 系列变频泳池热泵产品片，通过半透机身结构展示、螺旋钛管水流模拟与电费账单双机对比，直击高能效省电核心诉求。",
     highlights: [
       "半透明结构透视：庭院实景中直接透视机身内部压缩机与管路排布，结构逻辑清晰",
@@ -447,7 +449,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "CES 展会主视觉",
     year: "2024",
     client: "CES 展会项目",
-    deliverables: "1920×1080 · 24fps · 80s",
+    deliverables: "1920×1080 · 30fps · 80s",
     description: "面向 CES 国际消费电子展打造的 iGarden 旗舰矩阵宣传片，高密度集结水下机器人、超跑割草机、COP 39 热泵与光储一体系统。",
     highlights: [
       "多品类旗舰联展：红黑水下机器人水底气泡巡航、高速超跑竞速转场，适配展会大屏吸睛需求",
@@ -464,7 +466,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "241231_Power热泵",
     displayTitle: "Power 热泵",
     year: "2024",
-    deliverables: "1920×1080 · 24fps · 29s",
+    deliverables: "1920×1080 · 30fps · 29s",
     description: "Power 系列泳池热泵三维产品片，以黑色火山石肌理开篇，结合橙金科幻 HUD 读数与圆形 LED 控制屏微距演绎 COP 16 澎湃能效。",
     highlights: [
       "自然肌理视觉引入：暗调火山鹅卵石微距质感过渡至整机，营造沉稳厚重的工业气质",
@@ -481,7 +483,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250204_RTK视觉割草机",
     displayTitle: "RTK 视觉割草机",
     year: "2025",
-    deliverables: "1920×1080 · 24fps · 51s",
+    deliverables: "1920×1080 · 30fps · 51s",
     description: "RTK 三目视觉割草机器人三维发布片，重点拆解光学镜头组与 TurboSilence 动力核心，并融入儿童宠物草坪安全避障实景。",
     highlights: [
       "三目视觉光学拆解：高精密玻璃镜片组悬浮展开，直观呈现 Triple-Lens Vision System 感知结构",
@@ -498,7 +500,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250219_Lifestyle",
     displayTitle: "Lifestyle 庭院概念片",
     year: "2025",
-    deliverables: "1920×1080 · 24fps · 51s",
+    deliverables: "1920×1080 · 30fps · 51s",
     description: "面向未来户外生活方式的品牌概念短片，跨越破晓群山、逆光草叶露珠、造浪池冲浪与云端座舱 HUD 视角，构建宏大品牌想象力。",
     highlights: [
       "自然诗意氛围铺陈：暮色山峦与逆光草叶微距镜头交替，营造沉浸式户外情绪张力",
@@ -516,7 +518,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "暖通热泵 01",
     year: "2025",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 36s",
+    deliverables: "1920×1080 · 30fps · 36s",
     description: "Fairland TurboSilence ATW 暖通热泵三维商业片，展示立式金属机身、蓝光边缘氛围灯与海景现代别墅的 6 倍节能居住美学。",
     highlights: [
       "极简金属光影转场：拉丝金属几何折射开篇，快速建立精密家电视觉格调",
@@ -533,7 +535,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250409_勒芒-01",
     displayTitle: "勒芒概念片 01",
     year: "2025",
-    deliverables: "1920×1080 · 24fps · 30s",
+    deliverables: "1920×1080 · 30fps · 30s",
     description: "以勒芒 24 小时耐力赛为灵感的品牌跨界概念片，将水下机器人与割草机置入赛道双车竞速，最终无缝衔接泳池赛道红热泵。",
     highlights: [
       "勒芒赛道大场景还原：航拍 LE MANS 经典弯道与看台，借耐力赛基因背书产品持久性能",
@@ -550,7 +552,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250424_IEW合集-01",
     displayTitle: "IEW 作品合集 01",
     year: "2025",
-    deliverables: "1920×754 · 24fps · 62s",
+    deliverables: "1920×754 · 30fps · 62s",
     description: "超宽画幅定制的 IEW 展会能源管理合集片，以动感字体转场串联智能割草、家庭储能与泳池温控，适配展会巨幕视觉播放。",
     highlights: [
       "超宽展幕比例设计：1920×754 宽幅构图专门适配展会拼接大屏，空间延展感突出",
@@ -568,7 +570,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "勒芒热泵",
     year: "2025",
     client: "iGarden",
-    deliverables: "1920×1080 · 24fps · 31s",
+    deliverables: "1920×1080 · 30fps · 31s",
     description: "iGarden 勒芒联名配色热泵商业短片，从红金赛车尾翼无缝过渡至赛道红白路肩上的整机，突出 130% TurboSilence 爆发力与 ECO 节能。",
     highlights: [
       "赛车基因直觉转场：红金涂装赛车尾翼微距切入，直接将鲜红冲孔热泵置于勒芒赛道直道",
@@ -586,7 +588,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "激光雷达割草机器人",
     year: "2025",
     featured: true,
-    deliverables: "1920×1080 · 24fps · 48s",
+    deliverables: "1920×1080 · 30fps · 48s",
     description: "AI + LiDAR 激光雷达割草机器人商业三维片，以倾斜赛道速度感开场，重点展示复杂草坪全地形覆盖与足球障碍智能识别规划。",
     highlights: [
       "赛道动感过渡入场：大倾角赛道弯道极速镜头转入庭院草坪，赋予割草机器人敏捷操控感",
@@ -603,7 +605,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250613_木纹热泵",
     displayTitle: "木纹热泵",
     year: "2025",
-    deliverables: "1920×1080 · 24fps · 60s",
+    deliverables: "1920×1080 · 30fps · 60s",
     description: "主打自然木纹饰面与近零 GWP 环保冷媒的泳池热泵发布片，融合温润木质工艺、透明压缩机解构与蜂鸟栖息的生态治愈画面。",
     highlights: [
       "自然木纹工艺质感：精细木纹肌理搭配翠绿背光圆形触控环，让工业设备融入庭院美学",
@@ -621,7 +623,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "TSTB 热泵",
     year: "2025",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 50s",
+    deliverables: "1920×1080 · 30fps · 50s",
     description: "Fairland 西班牙语海外市场热泵商业片，涵盖金属铭牌精工细节、自研 AI 控温芯片可视化及雪景泳池 16 倍节能体验。",
     highlights: [
       "海外本地化商业包装：全片采用西班牙语卖点字幕，精准面向拉美与欧洲市场传播",
@@ -638,7 +640,7 @@ const portfolioVideos: PortfolioVideo[] = [
     rawTitle: "250723_N4水下机器人",
     displayTitle: "N4 水下机器人",
     year: "2025",
-    deliverables: "1920×1080 · 24fps · 44s",
+    deliverables: "1920×1080 · 30fps · 44s",
     description: "N4 小巧机身全变频水下机器人产品片，结合三维尺寸线框、内部旋涡水泵透视与顶置旋钮 HUD，呈现轻松免维护的洁净泳池体验。",
     highlights: [
       "紧凑机身线框示意：白黑黄撞色机身叠加三维包围盒线框，直观突出 Small Body 轻巧体态",
@@ -656,7 +658,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "CF N4 水下机器人",
     year: "2025",
     client: "CF",
-    deliverables: "1920×1080 · 24fps · 53s",
+    deliverables: "1920×1080 · 30fps · 53s",
     description: "CF ZEN 系列 N4 水下清洁机器人产品功能演示片，清晰呈现泳池池底巡航、单机/App 便捷操控以及池底/池壁/水线双清洁模式。",
     highlights: [
       "清澈池底巡航演示：自然日光焦散下展示白蓝配色 CF ZEN 机器人流畅清扫池底轨迹",
@@ -674,7 +676,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "暖通热泵",
     year: "2025",
     client: "iGarden",
-    deliverables: "1920×1080 · 24fps · 71s",
+    deliverables: "1920×1080 · 30fps · 71s",
     description: "iGarden 家庭暖通热泵深度解构宣传片，围绕首创多孔格栅工业设计、内部多层爆炸拆解与全屋热水/采暖分时能耗 HUD 展开。",
     highlights: [
       "首创多孔格栅微距：金属质感特写突出 1st multi hole design 独特声学与散热冲孔美学",
@@ -693,7 +695,7 @@ const portfolioVideos: PortfolioVideo[] = [
     year: "2025",
     featured: true,
     client: "CF",
-    deliverables: "1920×1080 · 24fps · 56s",
+    deliverables: "1920×1080 · 30fps · 56s",
     description: "CF N3 无线水下机器人商业三维片，运用高空泳池 1H 投影创意排版、暗调全变频水流转场与水线贴壁清扫特写展现高效续航。",
     highlights: [
       "泳池立体字创意构图：二楼阳台俯拍视角将 1H 大字融入泳池水面，直观传达 2 小时续航效率",
@@ -711,7 +713,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "Oasis 热泵",
     year: "2025",
     client: "iGarden",
-    deliverables: "1920×1080 · 24fps · 64s",
+    deliverables: "1920×1080 · 30fps · 64s",
     description: "Oasis 系列泳池热泵三维产品片，通过半透涡轮冷暖气流可视化、iGarden AI 语音对话交互界面与冬日雪景亲子戏水场景展现全季温暖。",
     highlights: [
       "突破性涡轮风道拆解：半透明机箱内呈现 Groundbreaking Turbofan 蓝进橙出双色强效气流",
@@ -729,7 +731,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "XP26 热泵",
     year: "2025",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 61s",
+    deliverables: "1920×1080 · 30fps · 61s",
     description: "Fairland XP26 哑黑蜂窝热泵商业大片，以棚拍斜光造型、黄金闪电热交换水流微距与水下悬浮 130% 提速界面展现旗舰制热速度。",
     highlights: [
       "极简暗调棚拍质感：斜射光束雕塑全黑蜂窝机身与 Fairland 标识，凸显旗舰工业设计",
@@ -747,7 +749,7 @@ const portfolioVideos: PortfolioVideo[] = [
     displayTitle: "XP16 热泵",
     year: "2026",
     client: "Fairland",
-    deliverables: "1920×1080 · 24fps · 46s",
+    deliverables: "1920×1080 · 30fps · 46s",
     description: "Fairland XP16 泳池热泵 2026 新品发布片，融合全息蓝光触控层叠动效、玻璃建筑线框夜景发光暖池与山景木质露台整机定格。",
     highlights: [
       "全息智能控温包装：机身面板延展出多层蓝光悬浮触控界面，强化 AI TurboSilence 智控科技感",
@@ -768,7 +770,7 @@ const portfolioVideos: PortfolioVideo[] = [
     role: "Product PV",
     category: "泳池热泵",
     client: "iGarden",
-    deliverables: "1920×1080 · 24fps · 65s",
+    deliverables: "1920×1080 · 30fps · 65s",
     description: "2026 年 6 月 iGarden X26 智能变频泳池热泵商业发布片，融合实景庭院光影、铝合金冲孔机身外观表现、TurboSilence AI 芯片与内部热交换结构解构，以及 AI Eco Mode 实时电价交互动效。",
     highlights: [
       "外观与场景质感：蓝色冲孔铝合金机身与户外泳池庭院自然融合，突出工业设计细节",
@@ -816,7 +818,7 @@ const portfolioVideos: PortfolioVideo[] = [
     highlights: [
       "电影宽银幕视觉张力：2.35:1 超广角仰拍配合漫天飞舞落叶动态模糊，强化醒狮腾跃而出的冲击感",
       "国风材质与双氛围光影：精细还原狮头绒毛、刺绣纹样与红金彩绘，涵盖晴空日光与暖调灯影双版视觉",
-      "节庆视觉整体包装：金色书法「祥瑞迎春 / AUSPICIOUSSPRING」与 CG 级场景自然融合，适配新春主视觉",
+      "节庆视觉整体包装：金色书法「祥瑞迎春 / AUSPICIOUS SPRING」与 CG 级场景自然融合，适配新春主视觉",
     ],
     videoUrl: "",
     xiaohongshuUrl: "https://www.xiaohongshu.com/discovery/item/6974dfbe000000000a02cf53?source=webshare&xhsshare=pc_web&xsec_token=ABmUJTopgLpTwOjqaQ617Odb66aWYn3agjFa5QTk5csI4=&xsec_source=pc_share",
@@ -839,9 +841,9 @@ const portfolioVideos: PortfolioVideo[] = [
     year: "2026",
     featured: true,
     role: "Product PV",
-    category: "泳池热泵",
+    category: "暖通热泵",
     client: "iGarden",
-    deliverables: "1920×1080 · 24fps · 76s",
+    deliverables: "1920×1080 · 30fps · 76s",
     description: "2026 年 10 月 iGarden 全铝合金工业设计暖通热泵商业发布片，涵盖首创多孔金属机身、1kW=7kW 内部管路能效拆解、-10°C 雪景满载制热与 Dual A+++ 全屋热水体验。",
     highlights: [
       "首创铝合金 ID 工艺：暗调蓝光环绕曲面搭配高精多孔金属格栅，奠定高端暖通工业美学",
@@ -895,6 +897,9 @@ function getRole(title: string) {
 }
 
 function getCategory(title: string) {
+  if (title.includes("暖通热泵")) {
+    return "暖通热泵"
+  }
   if (title.includes("热泵")) {
     return "泳池热泵"
   }
@@ -902,12 +907,31 @@ function getCategory(title: string) {
     return "水下机器人"
   }
   if (title.includes("割草")) {
-    return "庭院割草机"
+    return "割草机器人"
   }
   if (title.toUpperCase().includes("AIGC")) {
     return "AIGC"
   }
-  return "其他"
+  if (
+    title.includes("中控") ||
+    title.includes("Igarden") ||
+    title.includes("iGarden") ||
+    title.includes("企业宣传") ||
+    title.includes("CES") ||
+    title.includes("Lifestyle") ||
+    title.includes("勒芒") ||
+    title.includes("合集")
+  ) {
+    return "中控与品牌"
+  }
+  return "其他设备"
+}
+
+function getResponsibilities(title: string) {
+  if (title.toUpperCase().includes("AIGC")) {
+    return "个人全流程独立创作（创意分镜 / AI 生成 / 后期合成）"
+  }
+  return "独立完成：动画 / 灯光材质 / 渲染 / 后期合成（工业模型由 ID 部门提供）"
 }
 
 function getClient(title: string) {
@@ -981,12 +1005,13 @@ const orderedPortfolioVideos = portfolioVideos
   .map((video, originalIndex) => ({ video, originalIndex }))
   .sort((a, b) => getDateCode(b.video.rawTitle) - getDateCode(a.video.rawTitle))
 
-export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map(({ video, originalIndex }) => {
+export const projects: PortfolioProject[] = orderedPortfolioVideos.map(({ video, originalIndex }) => {
   const category = video.category || getCategory(video.rawTitle)
   return {
     title: video.displayTitle,
     slug: getSlug(video, originalIndex),
     role: video.role || getRole(video.rawTitle),
+    responsibilities: video.responsibilities || getResponsibilities(video.rawTitle),
     category,
     featured: Boolean(video.featured),
     dateLabel: formatDateLabel(video.rawTitle, video.year),
@@ -1012,3 +1037,11 @@ export const fallbackProjects: PortfolioProject[] = orderedPortfolioVideos.map((
     ],
   }
 })
+
+export function getPortfolioEntries(): PortfolioProject[] {
+  return projects
+}
+
+export function getProjectBySlug(slug: string): PortfolioProject | undefined {
+  return projects.find((project) => project.slug === slug)
+}

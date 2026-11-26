@@ -3,9 +3,9 @@ import { ArrowLeft } from "lucide-react"
 
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid"
 import BaseLayout from "@/layouts/BaseLayout.astro"
-import { getPortfolioEntries } from "@/lib/contentful"
+import { getPortfolioEntries } from "@/data/projects"
 
-const projects = await getPortfolioEntries()
+const projects = getPortfolioEntries()
 ---
 
 <BaseLayout title="全部作品归档 | Yang Zongye · 三维产品动态设计师">

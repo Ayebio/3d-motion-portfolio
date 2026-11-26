@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions"
 
 import { TopNav } from "@/components/navigation/TopNav"
+import { PROFILE } from "@/data/profile"
 import "@/styles/global.css"
 
 interface Props {
@@ -11,10 +12,12 @@ interface Props {
 }
 
 const {
-  title = "Yang Zongye · 三维产品动态设计师 | 作品集",
-  description = "Yang Zongye（三维产品动态设计师）商业作品集：聚焦 3D 产品动画、工业硬件解构、界面动效与品牌视觉影像。",
-  image = "/thumbnails/work-01.jpg",
+  title = `${PROFILE.name} · 三维产品动态设计师 | 作品集`,
+  description = `${PROFILE.name}（三维视频设计师 / 视频创意主导）商业作品集：近 4 年出海智能硬件 3D 产品发布片、工业机械解构与 3D + AI 实拍级混合工作流。`,
+  image = PROFILE.showreel.posterSrc,
 } = Astro.props
+
+const currentPath = Astro.url.pathname
 ---
 
 <!doctype html>
@@ -31,7 +34,7 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
-    <meta property="og:site_name" content="Yang Zongye · 三维产品动态设计师" />
+    <meta property="og:site_name" content={`${PROFILE.name} · 三维产品动态设计师`} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -57,14 +60,14 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <TopNav client:load />
+    <TopNav client:load initialPath={currentPath} />
     <main class="view-soft min-h-dvh">
       <slot />
     </main>
     <footer class="border-t border-border/60 px-6 pb-24 pt-10 text-center text-xs text-muted-foreground space-y-2 sm:py-12">
-      <p class="font-medium text-foreground">Yang Zongye · 三维产品动态设计师</p>
-      <p>广州 / 远程协作 · Cinema 4D / Redshift / After Effects / Seedance</p>
-      <p class="text-[11px] text-muted-foreground/75">© {new Date().getFullYear()} Yang Zongye. All rights reserved.</p>
+      <p class="font-medium text-foreground">{PROFILE.name} · {PROFILE.title}</p>
+      <p>{PROFILE.location} · {PROFILE.footerPipeline}</p>
+      <p class="text-[11px] text-muted-foreground/75">© {new Date().getFullYear()} {PROFILE.name}. All rights reserved.</p>
     </footer>
   </body>
 </html>

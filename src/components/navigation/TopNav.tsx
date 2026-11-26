@@ -5,11 +5,18 @@ import { ArrowUpRight, Clapperboard, Home, LayoutGrid, MessageCircle, Moon, Sun 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-const navItems = [
-  { href: "/", label: "首页", mobileLabel: "首页", icon: Home },
-  { href: "/#work", label: "精选作品", mobileLabel: "精选", icon: Clapperboard },
-  { href: "/archive", label: "全部归档", mobileLabel: "归档", icon: LayoutGrid },
-  { href: "/contact", label: "联系合作", mobileLabel: "联系", icon: MessageCircle },
+const desktopNavItems = [
+  { href: "/", label: "首页" },
+  { href: "/#work", label: "精选作品" },
+  { href: "/#about", label: "关于我" },
+  { href: "/archive", label: "全部归档" },
+]
+
+const mobileNavItems = [
+  { href: "/", mobileLabel: "首页", icon: Home },
+  { href: "/#work", mobileLabel: "精选", icon: Clapperboard },
+  { href: "/archive", mobileLabel: "归档", icon: LayoutGrid },
+  { href: "/contact", mobileLabel: "联系", icon: MessageCircle },
 ]
 
 function getClientTheme(): "light" | "dark" {
@@ -19,28 +26,35 @@ function getClientTheme(): "light" | "dark" {
   return "dark"
 }
 
-export function TopNav() {
+interface TopNavProps {
+  initialPath?: string
+}
+
+export function TopNav({ initialPath = "/" }: TopNavProps) {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark")
   const [mounted, setMounted] = React.useState(false)
-  const [locationState, setLocationState] = React.useState({ pathname: "/", hash: "" })
-  const [isInWorkSection, setIsInWorkSection] = React.useState(false)
+  const [locationState, setLocationState] = React.useState({ pathname: initialPath, hash: "" })
+  const [homeSection, setHomeSection] = React.useState<"hero" | "work" | "about">("hero")
 
   React.useEffect(() => {
     setMounted(true)
     setTheme(getClientTheme())
 
-    const syncWorkScroll = () => {
+    const syncHomeScroll = () => {
       if (window.location.pathname !== "/") {
-        setIsInWorkSection(false)
+        setHomeSection("hero")
         return
       }
+      const aboutEl = document.getElementById("about")
       const workEl = document.getElementById("work")
-      if (!workEl) {
-        setIsInWorkSection(false)
-        return
+      const threshold = window.innerHeight * 0.42
+      if (aboutEl && aboutEl.getBoundingClientRect().top <= threshold) {
+        setHomeSection("about")
+      } else if (workEl && workEl.getBoundingClientRect().top <= threshold) {
+        setHomeSection("work")
+      } else {
+        setHomeSection("hero")
       }
-      const rect = workEl.getBoundingClientRect()
-      setIsInWorkSection(rect.top <= window.innerHeight * 0.45)
     }
 
     const syncLocation = () => {
@@ -49,18 +63,18 @@ export function TopNav() {
         hash: window.location.hash,
       })
       setTheme(getClientTheme())
-      syncWorkScroll()
+      syncHomeScroll()
     }
 
     syncLocation()
     document.addEventListener("astro:page-load", syncLocation)
     window.addEventListener("hashchange", syncLocation)
-    window.addEventListener("scroll", syncWorkScroll, { passive: true })
+    window.addEventListener("scroll", syncHomeScroll, { passive: true })
 
     return () => {
       document.removeEventListener("astro:page-load", syncLocation)
       window.removeEventListener("hashchange", syncLocation)
-      window.removeEventListener("scroll", syncWorkScroll)
+      window.removeEventListener("scroll", syncHomeScroll)
     }
   }, [])
 
@@ -78,10 +92,13 @@ export function TopNav() {
   const getIsActive = (href: string) => {
     const { pathname, hash } = locationState
     if (href === "/") {
-      return pathname === "/" && !isInWorkSection && hash !== "#work"
+      return pathname === "/" && homeSection === "hero" && hash !== "#work" && hash !== "#about"
     }
     if (href === "/#work") {
-      return (pathname === "/" && (isInWorkSection || hash === "#work")) || pathname.startsWith("/projects/")
+      return (pathname === "/" && (homeSection === "work" || hash === "#work")) || pathname.startsWith("/projects/")
+    }
+    if (href === "/#about") {
+      return (pathname === "/" && (homeSection === "about" || hash === "#about")) || pathname.startsWith("/resume")
     }
     return pathname.startsWith(href)
   }
@@ -100,9 +117,9 @@ export function TopNav() {
             <span className="hidden sm:inline text-xs font-normal text-muted-foreground">· 3D Motion</span>
           </a>
 
-          {/* Desktop Nav Items (unchanged) */}
-          <div className="hidden items-center gap-5 sm:flex">
-            {navItems.map((item) => {
+          {/* Desktop Nav Items */}
+          <div className="hidden items-center gap-6 sm:flex">
+            {desktopNavItems.map((item) => {
               const isActive = getIsActive(item.href)
 
               return (
@@ -120,7 +137,7 @@ export function TopNav() {
             })}
           </div>
 
-          {/* Actions: clean theme toggle on mobile (no hamburger); theme toggle + CTA on desktop */}
+          {/* Actions: theme toggle + single desktop CTA */}
           <div className="flex items-center gap-2">
             <Button
               type="button"
@@ -136,7 +153,12 @@ export function TopNav() {
 
             <a
               href="/contact"
-              className="hidden sm:inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground outline-none hover:opacity-85 focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
+              className={cn(
+                "hidden sm:inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95",
+                locationState.pathname.startsWith("/contact")
+                  ? "bg-secondary text-foreground border border-border"
+                  : "bg-primary text-primary-foreground hover:opacity-85"
+              )}
             >
               联系合作
               <ArrowUpRight className="size-3" />
@@ -151,7 +173,7 @@ export function TopNav() {
           aria-label="移动端主导航"
           className="pointer-events-auto mx-auto grid max-w-[344px] grid-cols-4 items-center gap-1 rounded-full border border-border/85 bg-background/85 p-1.5 shadow-[0_18px_48px_-12px_rgba(0,0,0,0.4)] backdrop-blur-2xl dark:border-white/15 dark:bg-neutral-950/85 dark:shadow-[0_22px_54px_-10px_rgba(0,0,0,0.88)]"
         >
-          {navItems.map((item) => {
+          {mobileNavItems.map((item) => {
             const Icon = item.icon
             const isActive = getIsActive(item.href)
 

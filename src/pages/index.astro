@@ -1,61 +1,44 @@
 ---
 import { ArrowRight } from "lucide-react"
 
+import { AboutSection } from "@/components/about/AboutSection"
+import { HeroBackgroundVideo, HeroCtaActions } from "@/components/hero/HeroMediaAndCta"
 import { FadeIn } from "@/components/motion/FadeIn"
 import { FeaturedShowcaseCarousel } from "@/components/portfolio/FeaturedShowcaseCarousel"
 import BaseLayout from "@/layouts/BaseLayout.astro"
-import { getPortfolioEntries } from "@/lib/contentful"
+import { PROFILE } from "@/data/profile"
+import { getPortfolioEntries } from "@/data/projects"
 
-const projects = await getPortfolioEntries()
+const projects = getPortfolioEntries()
 const featuredProjects = projects.filter((project) => project.featured)
 const selectedProjects = featuredProjects.length > 0 ? featuredProjects : projects.slice(0, 9)
-const heroImage = selectedProjects[0].images[0]
-const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : heroImage.src.src
 ---
 
-<BaseLayout title="Yang Zongye · 三维产品动态设计师 | 作品集">
+<BaseLayout title={`${PROFILE.name} · 三维产品动态设计师 | 作品集`}>
   <section class="px-3.5 pb-6 pt-18 sm:px-6 sm:pb-10 sm:pt-20">
     <div class="relative isolate mx-auto flex min-h-0 max-w-7xl flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-neutral-950 px-5 pb-6 pt-10 shadow-soft-lg sm:min-h-[82svh] sm:px-10 sm:pb-12 sm:pt-20">
-      <img
-        src={heroImageSource}
-        alt={heroImage.alt}
-        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-55 animate-slow-drift filter contrast-105 brightness-90"
-        loading="eager"
-      />
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(8,8,8,0.45),rgba(8,8,8,0.72)_58%,rgba(8,8,8,0.94))]"></div>
+      <HeroBackgroundVideo client:load />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(8,8,8,0.48),rgba(8,8,8,0.68)_55%,rgba(8,8,8,0.92))]"></div>
 
       <div class="mx-auto flex flex-1 max-w-4xl flex-col items-center justify-center py-6 text-center sm:py-10">
         <p class="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white/75 sm:mb-4 sm:text-xs sm:tracking-[0.26em]">
-          三维产品动态设计师 · 广州 / 远程协作
+          三维视频设计师 · 视频创意主导 · 广州 / 远程协作
         </p>
         <h1 class="text-balance whitespace-nowrap text-[2.45rem] leading-none font-semibold tracking-tight text-white sm:whitespace-normal sm:text-7xl lg:text-8xl">
-          Yang Zongye
+          {PROFILE.name}
         </h1>
-        <p class="mt-4 max-w-2xl text-sm leading-6 text-white/80 sm:mt-6 sm:text-lg sm:leading-7">
-          专注商业三维产品动画、AIGC 动态影像、硬核结构解构与智能硬件视觉，为产品与品牌建立清晰的第一印象。
+        <p class="mt-4 max-w-2xl text-sm leading-6 text-white/85 sm:mt-6 sm:text-lg sm:leading-7">
+          近 4 年出海智能硬件三维视觉主导经验，专注新品首发 PV、高精度机械解构与 3D + AI 实拍级混合工作流。
         </p>
-        <div class="mt-6 flex w-full flex-col gap-2.5 sm:mt-8 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
-          <a
-            href="#work"
-            class="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-white px-5 text-sm font-medium text-black outline-none hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98] sm:w-auto"
-          >
-            浏览精选案例
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </a>
-          <a
-            href="/contact"
-            class="inline-flex h-10 w-full items-center justify-center rounded-md border border-white/35 bg-white/5 px-5 text-sm font-medium text-white outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98] sm:w-auto"
-          >
-            联系合作 / 面试邀约
-          </a>
-        </div>
+
+        <HeroCtaActions client:load />
       </div>
 
       <div class="mx-auto mt-4 grid w-full max-w-6xl gap-2.5 text-white sm:mt-0 sm:grid-cols-3 sm:gap-4">
         {[
-          ["商业产品 PV", "产品发布片 / 官网主视觉 / 品牌宣传片"],
-          ["硬核功能解构", "内部结构拆解 / 原理可视化 / 机器人演示"],
-          ["AIGC 与质感渲染", "AI 商业镜头 / 动态视觉海报 / 材质光影"],
+          ["全链路 Solo 产品 PV", "独立完成动画 / 灯光材质 / 渲染 / 后期合成"],
+          ["硬核工业结构解构", "电机与压缩机爆炸图 / 原理可视化 / 展会主视觉"],
+          ["3D + AI 实拍级工作流", "AI 拟真场景人物 + PFTrack 反求跟踪 + 3D 合成"],
         ].map(([title, body]) => (
           <div class="rounded-xl border border-white/15 bg-black/45 px-4 py-3.5 backdrop-blur-xl sm:p-6">
             <p class="text-xs font-semibold text-white sm:text-sm">{title}</p>
@@ -66,16 +49,18 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
     </div>
   </section>
 
-  <section id="work" class="py-12 sm:py-28">
+  <section id="work" class="py-12 sm:py-24">
     <div class="mx-auto max-w-6xl px-5 sm:px-6">
       <FadeIn client:visible>
-        <div class="mb-5 max-w-3xl sm:mb-12">
-          <p class="text-[11px] font-medium uppercase tracking-[0.26em] text-muted-foreground sm:text-xs sm:tracking-[0.28em]">Selected Works / 精选作品</p>
-          <h2 class="mt-2.5 text-balance text-[1.375rem] leading-[1.25] font-semibold tracking-tight text-foreground sm:mt-4 sm:text-6xl">
-            解构工业美学，<br />以动态视觉传递产品核心价值。
+        <div class="mb-5 max-w-4xl sm:mb-12">
+          <p class="text-[11px] font-medium uppercase tracking-[0.26em] text-muted-foreground sm:text-xs sm:tracking-[0.28em]">
+            Selected Works / 精选作品
+          </p>
+          <h2 class="mt-2.5 text-balance text-[1.45rem] leading-[1.22] font-semibold tracking-tight text-foreground sm:mt-4 sm:text-5xl lg:text-6xl">
+            解构工业美学，<br />以动态视觉呈现产品价值。
           </h2>
           <p class="mt-2.5 text-xs leading-5 text-muted-foreground sm:mt-5 sm:text-base sm:leading-7">
-            精选商业 3D 产品动画、智能硬件演示与 AIGC 动态视觉代表作。
+            精选商业 3D 产品发布片、智能硬件演示与 AIGC 动态视觉代表作（点击封面直接播放）。
           </p>
         </div>
       </FadeIn>
@@ -93,4 +78,6 @@ const heroImageSource = typeof heroImage.src === "string" ? heroImage.src : hero
       </a>
     </div>
   </section>
+
+  <AboutSection />
 </BaseLayout>

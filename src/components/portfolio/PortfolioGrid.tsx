@@ -35,6 +35,7 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
               category === "全部"
                 ? projects.length
                 : projects.filter((p) => p.category === category).length
+            if (category !== "全部" && count === 0) return null
 
             return (
               <button
@@ -162,9 +163,9 @@ export function PortfolioGrid({ projects, showFilter = true }: PortfolioGridProp
                           <p className="text-xs font-medium text-muted-foreground truncate">
                             {project.client || "商业合作项目"}
                           </p>
-                          {project.tools?.[0] && (
-                            <span className="inline-block shrink-0 text-[11px] font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded border border-border/60">
-                              {project.tools[0]}
+                          {project.deliverables && (
+                            <span className="inline-block shrink-0 text-[10px] font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded border border-border/60">
+                              {project.deliverables.split(" · ").slice(1).join(" · ") || project.deliverables}
                             </span>
                           )}
                         </div>

@@ -9,23 +9,23 @@ const projects = await getPortfolioEntries()
 ---
 
 <BaseLayout title="全部作品归档 | Yang Zongye · 三维产品动态设计师">
-  <section class="px-6 py-24">
+  <section class="px-3.5 pb-16 pt-20 sm:px-6 sm:py-24">
     <div class="mx-auto max-w-6xl">
       <a
         href="/#work"
-        class="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-muted-foreground outline-none hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
+        class="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-xs sm:py-2 sm:text-sm text-muted-foreground outline-none hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-95"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         返回精选案例
       </a>
 
-      <div class="mb-12 mt-10 max-w-3xl">
-        <p class="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">Complete Archive / 全部作品</p>
-        <h1 class="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
+      <div class="mb-7 mt-6 max-w-3xl sm:mb-12 sm:mt-10">
+        <p class="text-[11px] font-medium uppercase tracking-[0.26em] text-muted-foreground sm:text-xs sm:tracking-[0.28em]">Complete Archive / 全部作品</p>
+        <h1 class="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:mt-4 sm:text-6xl">
           全部项目归档
         </h1>
-        <p class="mt-3 text-sm text-muted-foreground">
-          收录 Yang Zongye 历年 {projects.length} 部商业 TVC、工业产品三维动画、机器人与界面交互视觉作品。
+        <p class="mt-2.5 text-xs leading-relaxed text-muted-foreground sm:mt-3 sm:text-sm">
+          收录 Yang Zongye 历年 {projects.length} 部商业产品 PV、AIGC、工业三维动画、机器人与界面交互视觉作品。
         </p>
       </div>
 

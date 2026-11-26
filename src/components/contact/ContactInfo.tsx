@@ -19,12 +19,12 @@ export function ContactInfo() {
         <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
           Yang Zongye · 三维产品动态设计师
         </p>
-        <h1 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl leading-[1.15]">
+        <h1 className="mt-3 text-balance text-[1.75rem] font-bold tracking-tight text-foreground sm:mt-4 sm:text-5xl leading-[1.2] sm:leading-[1.15]">
           期待新的工作机会，
           <br />
           也欢迎商业项目合作。
         </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
+        <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:mt-6 sm:text-base">
           目前正在寻找三维产品动态设计全职或远程岗位，欢迎 HR 与设计团队随时联系交流、邀约面试；同时也承接商业 3D 产品 TVC、发布会主视觉、官网首屏视频及硬件结构/界面演示项目。
         </p>
       </div>
@@ -96,7 +96,7 @@ export function ContactInfo() {
       </div>
 
       {/* Meta Specs */}
-      <div className="grid grid-cols-2 gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground">
+      <div className="grid grid-cols-1 gap-3.5 border-t border-border/60 pt-5 text-xs text-muted-foreground sm:grid-cols-2 sm:gap-4 sm:pt-6">
         <div className="flex items-start gap-2">
           <MapPin className="size-4 shrink-0 text-primary" />
           <div>
